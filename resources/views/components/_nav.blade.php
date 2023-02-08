@@ -1,4 +1,4 @@
-<nav class="bg-gray-800 w-1/6 h-screen py-12 px-8 flex flex-col justify-center">
+<nav class="bg-gray-800 w-100 h-screen py-12 px-8 flex flex-col justify-center">
   <div class="flex-shrink-0 flex items-center ">
     <h1 class="font-bold text-2xl text-white">StockManager</h1>
   </div>
