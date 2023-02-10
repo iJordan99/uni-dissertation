@@ -11,6 +11,13 @@ class Warehouse extends Model
 
     public $timestamps = false;
 
+    public function scopeFilter($query){
+        if(request('search')){
+            $query
+                ->where('name','like', '%'. request('search') . '%');
+        }
+    }
+
     public function Items()
     {
         return $this->belongsToMany(Item::class)->withTimestamps()->withPivot('stock');

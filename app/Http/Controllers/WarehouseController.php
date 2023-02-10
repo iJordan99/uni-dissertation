@@ -10,7 +10,11 @@ class WarehouseController extends Controller
     public function index()
     {
         return view('warehouse.index', [
-            'warehouses' => Warehouse::all(),
+            'warehouses' => $this->getWarehouses(),
         ]);
+    }
+
+    protected function getWarehouses(){
+        return Warehouse::latest()->filter()->get();
     }
 }
