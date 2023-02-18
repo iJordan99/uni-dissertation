@@ -1,5 +1,5 @@
 @props(['warehouse'])
-<div class="group relative mb-10  ">
+<div class="group relative m-2">
   <div class="relative w-full h-80 bg-white rounded-lg overflow-hidden group-hover:bg-gray-100 sm:aspect-w-2 sm:aspect-h-1 sm:h-64 lg:aspect-w-1 lg:aspect-h-1 flex justify-center">
     {{-- https://iconscout.com/icon/warehouse-1450805 --}}
     <img src="{{ asset('Images/warehouse.svg') }}" alt="" style="max-height: 100%" >

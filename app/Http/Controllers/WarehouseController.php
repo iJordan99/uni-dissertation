@@ -3,13 +3,14 @@
 namespace App\Http\Controllers;
 use App\Models\Warehouse;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class WarehouseController extends Controller
 {
-    public function index()
+    public function index(): View
     {
         return view('warehouse.index', [
-            'warehouses' => $this->getWarehouses(),
+            'warehouses' => Warehouse::latest()->filter()->paginate(9)->withQueryString(),
         ]);
     }
 
@@ -28,10 +29,5 @@ class WarehouseController extends Controller
     public function create()
     {
         return view('warehouse.create');
-    }
-
-
-    protected function getWarehouses(){
-        return Warehouse::latest()->filter()->get();
     }
 }
