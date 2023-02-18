@@ -16,3 +16,6 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', [WarehouseController::class, 'index']);
+Route::get('/create', [WarehouseController::class, 'create']);
+Route::post('/create', [WarehouseController::class, 'store']);
+

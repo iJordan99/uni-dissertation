@@ -16,6 +16,8 @@ return new class () extends Migration {
             $table->id();
             $table->string('location');
             $table->string('name');
+            $table->string('country');
+            $table->string('postcode');
             $table->timestamps();
         });
     }
