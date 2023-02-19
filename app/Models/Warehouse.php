@@ -27,9 +27,9 @@ class Warehouse extends Model
 
     }
 
-    public function Items()
+    public function storageBins()
     {
-        return $this->belongsToMany(Item::class)->withTimestamps()->withPivot('stock');
+        return $this->hasMany(StorageBin::class);
     }
 
 

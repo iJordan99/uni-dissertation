@@ -14,10 +14,19 @@ class WarehouseController extends Controller
         ]);
     }
 
+    public function show(Warehouse $warehouse)
+    {
+        return view('warehouse.show',[
+            'warehouse' => $warehouse
+        ]);
+    }
+
+
     public function store()
     {
         Warehouse::create(
             request()->validate([
+                'uuid' => uuid_create(),
                 'name' => ['required', 'max:255', 'min:3'],
                 'location' => ['required','min:6'],
                 'country' => ['required','max:255'],

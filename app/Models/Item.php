@@ -13,6 +13,6 @@ class Item extends Model
 
     public function warehouses()
     {
-        return $this->belongsToMany(Warehouse::class)->withTimestamps()->withPivot('stock');
+        return $this->belongsToMany(StorageBin::class);
     }
 }

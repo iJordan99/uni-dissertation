@@ -4,7 +4,8 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class () extends Migration {
+return new class extends Migration
+{
     /**
      * Run the migrations.
      *
@@ -12,13 +13,12 @@ return new class () extends Migration {
      */
     public function up()
     {
-        Schema::create('warehouses', function (Blueprint $table) {
+        Schema::create('storage_bins', function (Blueprint $table) {
             $table->id();
-            $table ->uuid('uuid');
-            $table->string('location');
+            $table->foreignid('warehouse_id');
             $table->string('name');
-            $table->string('country');
-            $table->string('postcode');
+            $table->integer('capacity');
+            $table->integer('max_capacity');
             $table->timestamps();
         });
     }
@@ -30,6 +30,6 @@ return new class () extends Migration {
      */
     public function down()
     {
-        Schema::dropIfExists('warehouses');
+        Schema::dropIfExists('storage_bins');
     }
 };

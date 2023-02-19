@@ -11,9 +11,6 @@
       <a href="#" class="text-white hover:bg-blue-400 hover:text-white py-3 rounded-md text-sm font-medium mt-2 pl-3">PlaceHolder</a>
 
       <a href="#" class="text-white hover:bg-blue-400 hover:text-white py-3 rounded-md text-sm font-medium mt-2 pl-3">PlaceHolder</a>
-
-      <a href="#" class="text-white hover:bg-blue-400 hover:text-white py-3 rounded-md text-sm font-medium mt-2 pl-3">Settings</a>
-
       <div class="ml-1 relative mt-10 flex pr-3 place-content-between">
         <p class="text-white text-sm">Jordan S</p>
         <div x-data="{ open: false }">
