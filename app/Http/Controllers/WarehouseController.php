@@ -1,11 +1,9 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Models\StorageBin;
+
 use App\Models\Warehouse;
-use Illuminate\Http\Request;
 use Illuminate\View\View;
-use Ramsey\Uuid\Exception\TimeSourceException;
 
 class WarehouseController extends Controller
 {
@@ -28,14 +26,13 @@ class WarehouseController extends Controller
     {
         Warehouse::create(
             request()->validate([
-                'uuid' => uuid_create(),
                 'name' => ['required', 'max:255', 'min:3'],
                 'location' => ['required','min:6'],
                 'country' => ['required','max:255'],
                 'postcode' => ['required', 'max:255', 'min:6'],
             ]));
 
-        return redirect('/');
+        return redirect('/locations');
     }
     public function create()
     {

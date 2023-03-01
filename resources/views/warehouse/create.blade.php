@@ -6,7 +6,7 @@
                     <div class="flex align-middle mt-4 h-10">
                         <h2 class="text-xl font-bold py-2 text-gray-700 px-1">Create Warehouse Location</h2>
                     </div>
-                    <form action="/create" method="POST">
+                    <form action="/location" method="POST">
                         @csrf
                         <div class="mb-6 mt-4 w-1/3">
                             <label class="block mb-2 font-bold text-sm text-gray-700 px-1" for="name">

@@ -3,6 +3,7 @@
 namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Support\Str;
 
 
 class Warehouse extends Model
@@ -11,6 +12,7 @@ class Warehouse extends Model
 
     public mixed $items;
     protected $fillable = [
+        'uuid',
         'name',
         'location',
         'country',
@@ -19,6 +21,14 @@ class Warehouse extends Model
 
     public $timestamps = false;
 
+
+    protected static function boot()
+    {
+        parent::boot();
+        static::creating( function ($model) {
+            $model->uuid = uuid_create();
+        });
+    }
 
     public function scopeFilter($query){
         if(request('search')){

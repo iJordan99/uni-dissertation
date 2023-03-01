@@ -1,7 +1,7 @@
 <?php
 
+use App\Http\Controllers\StorageBinController;
 use App\Http\Controllers\WarehouseController;
-use App\Models\Warehouse;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,9 +15,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', [WarehouseController::class, 'index'])->name('home');
-Route::get('warehouse/{warehouse:uuid}',[WarehouseController::class, 'show']);
-Route::get('/create', [WarehouseController::class, 'create']);
-Route::post('/create', [WarehouseController::class, 'store']);
-Route::get('/warehouse/create', [WarehouseController::class, 'create']);
+Route::get('/locations', [WarehouseController::class, 'index'])->name('home');
+Route::get('warehouse/{warehouse:uuid}',[WarehouseController::class, 'show'])->name('warehouse.show');
+Route::get('location/create', [WarehouseController::class, 'create'])->name('location.create');
+Route::post('/location', [WarehouseController::class, 'store']);
+
+
+//Storage Bin Routes
+Route::get('/warehouse/{warehouse:uuid}/storage_bins/create', [StorageBinController::class, 'create'])->name('storage.create');
+Route::post('/warehouse/{warehouse:uuid}/storage_bins', [StorageBinController::class, 'store']);
 

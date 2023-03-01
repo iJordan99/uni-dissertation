@@ -6,7 +6,7 @@
   <div class="sm:block pt-5">
     <div class="flex flex-col">
       <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
-      <a href="/" class="bg-blue-400 text-white py-3 rounded-md text-sm font-medium pl-3" aria-current="page">Locations</a>
+      <a href="{{ route('home') }}" class="bg-blue-400 text-white py-3 rounded-md text-sm font-medium pl-3" aria-current="page">Locations</a>
 
       <a href="#" class="text-white hover:bg-blue-400 hover:text-white py-3 rounded-md text-sm font-medium mt-2 pl-3">PlaceHolder</a>
 
