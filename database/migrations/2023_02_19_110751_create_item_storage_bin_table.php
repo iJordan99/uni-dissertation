@@ -13,10 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('item_storage', function (Blueprint $table) {
+        Schema::create('item_storage_bin', function (Blueprint $table) {
             $table->primary(['storage_bin_id', 'item_id']);
             $table->foreignId('storage_bin_id');
             $table->foreignId('item_id');
+            $table->integer('amount');
             $table->timestamps();
         });
     }
@@ -28,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('item_storage');
+        Schema::dropIfExists('item_storage_bin');
     }
 };
