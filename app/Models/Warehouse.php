@@ -9,6 +9,7 @@ class Warehouse extends Model
 {
     use HasFactory;
 
+    public mixed $items;
     protected $fillable = [
         'name',
         'location',
@@ -30,6 +31,11 @@ class Warehouse extends Model
     public function storageBins()
     {
         return $this->hasMany(StorageBin::class);
+    }
+
+    public function items()
+    {
+        return $this->hasManyThrough(Item::Class,StorageBin::class);
     }
 
 

@@ -18,9 +18,8 @@ class StorageBinFactory extends Factory
     public function definition()
     {
         return [
-            'name' => fake()->name,
+            'identifier' => fake()->word(),
             'warehouse_id' => StorageBin::factory(),
-            'capacity' => fake()->numberBetween(1,5000),
             'max_capacity' => 5000
         ];
     }

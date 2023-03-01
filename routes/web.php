@@ -19,4 +19,5 @@ Route::get('/', [WarehouseController::class, 'index'])->name('home');
 Route::get('warehouse/{warehouse:uuid}',[WarehouseController::class, 'show']);
 Route::get('/create', [WarehouseController::class, 'create']);
 Route::post('/create', [WarehouseController::class, 'store']);
+Route::get('/warehouse/create', [WarehouseController::class, 'create']);
 

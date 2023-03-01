@@ -11,8 +11,8 @@ class Item extends Model
 
     public $timestamps = false;
 
-    public function warehouses()
+    public function storageBins()
     {
-        return $this->belongsToMany(StorageBin::class);
+        return $this->belongsToMany(StorageBin::class)->withPivot('amount');
     }
 }

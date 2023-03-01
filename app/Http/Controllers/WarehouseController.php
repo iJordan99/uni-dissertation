@@ -1,9 +1,11 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Models\StorageBin;
 use App\Models\Warehouse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
+use Ramsey\Uuid\Exception\TimeSourceException;
 
 class WarehouseController extends Controller
 {
@@ -16,11 +18,11 @@ class WarehouseController extends Controller
 
     public function show(Warehouse $warehouse)
     {
-        return view('warehouse.show',[
-            'warehouse' => $warehouse
+//        return $warehouse->load('storageBins.items')->storageBins;
+        return view('warehouse.show', [
+            'warehouse' => $warehouse->load('storageBins.items')
         ]);
     }
-
 
     public function store()
     {
