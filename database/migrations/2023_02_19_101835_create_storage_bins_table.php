@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreignid('warehouse_id');
             $table->string('identifier');
             $table->integer('max_capacity');
+            $table->decimal('replenish_percent', 8,2);
             $table->timestamps();
         });
     }

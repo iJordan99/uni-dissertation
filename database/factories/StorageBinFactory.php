@@ -20,7 +20,8 @@ class StorageBinFactory extends Factory
         return [
             'identifier' => fake()->word(),
             'warehouse_id' => StorageBin::factory(),
-            'max_capacity' => 5000
+            'max_capacity' => 5000,
+            'replenish_percent' => 0
         ];
     }
 }
