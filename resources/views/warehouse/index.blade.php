@@ -4,7 +4,7 @@
             <div class="flex align-middle mt-4 h-10">
                 <h2 class="text-2xl text-gray-900 font-bold py-2">Warehouse Locations</h2>
                 <div class="h-14 w-8 mt-2 ml-2">
-                    <a href="create"
+                    <a href="{{ route('location.create') }}"
                        class="text-blue-500 bg-transparent
                         h-8 text-center font-bold cursor-pointer text-2xl">+</a>
                 </div>
