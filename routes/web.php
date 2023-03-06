@@ -1,9 +1,10 @@
 <?php
 
+use App\Http\Controllers\LoginController;
 use App\Http\Controllers\StorageBinController;
 use App\Http\Controllers\WarehouseController;
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\RegisterController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -14,11 +15,18 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::get('register', [RegisterController::class, 'create'])->name('register')->middleware('guest');
+Route::post( 'register', [RegisterController::class, 'store'])->name('register')->middleware('guest');
 
-Route::get('/locations', [WarehouseController::class, 'index'])->name('home');
-Route::get('warehouse/{warehouse:uuid}',[WarehouseController::class, 'show'])->name('warehouse.show');
-Route::get('location/create', [WarehouseController::class, 'create'])->name('location.create');
-Route::post('/location', [WarehouseController::class, 'store']);
+Route::get('login', [LoginController::class, 'create'])->name('login')->middleware('guest');
+Route::post('login', [LoginController::class, 'store'])->name('login');
+
+Route::get('logout', [LoginController::class, 'destroy'])->name('logout')->middleware('auth');
+
+Route::get('locations', [WarehouseController::class, 'index'])->name('home')->middleware('auth');
+Route::get('warehouse/{warehouse:uuid}',[WarehouseController::class, 'show'])->name('warehouse.show')->middleware('auth');
+Route::get('location/create', [WarehouseController::class, 'create'])->name('location.create')->middleware('auth');
+Route::post('/locations', [WarehouseController::class, 'store'])->middleware('auth');
 
 
 //Storage Bin Routes

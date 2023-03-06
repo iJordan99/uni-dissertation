@@ -8,11 +8,11 @@
       <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
       <a href="{{ route('home') }}" class="bg-blue-400 text-white py-3 rounded-md text-sm font-medium pl-3" aria-current="page">Locations</a>
 
-      <a href="#" class="text-white hover:bg-blue-400 hover:text-white py-3 rounded-md text-sm font-medium mt-2 pl-3">PlaceHolder</a>
+      <a href="#" class="text-white hover:bg-blue-400 hover:text-white py-3 rounded-md text-sm font-medium mt-2 pl-3">Items</a>
 
-      <a href="#" class="text-white hover:bg-blue-400 hover:text-white py-3 rounded-md text-sm font-medium mt-2 pl-3">PlaceHolder</a>
+      <a href="#" class="text-white hover:bg-blue-400 hover:text-white py-3 rounded-md text-sm font-medium mt-2 pl-3">Alerts</a>
       <div class="ml-1 relative mt-10 flex pr-3 place-content-between">
-        <p class="text-white text-sm">Jordan S</p>
+        <p class="text-white text-sm">{{ auth()->user()->name }}</p>
         <div x-data="{ open: false }">
           <button @click="open = ! open" type="button" class="bg-gray-800 flex text-sm rounded-full" id="user-menu-button" aria-expanded="false" aria-haspopup="true">
             <span class="sr-only">Open user menu</span>
@@ -25,7 +25,7 @@
               <!-- Active: "bg-gray-100", Not Active: "" -->
               <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-500 focus:bg-blue-500 hover:text-white" role="menuitem" tabindex="-1" id="user-menu-item-0">Your Profile</a>
               <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-500 focus:bg-blue-500 hover:text-white" role="menuitem" tabindex="-1" id="user-menu-item-1">Settings</a>
-              <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-500 focus:bg-blue-500 hover:text-white" role="menuitem" tabindex="-1" id="user-menu-item-2">Sign out</a>
+              <a href="{{ route('logout') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-500 focus:bg-blue-500 hover:text-white" role="menuitem" tabindex="-1" id="user-menu-item-2">Sign out</a>
             </div>
         </div>
       </div>
