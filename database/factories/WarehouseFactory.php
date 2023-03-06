@@ -19,10 +19,11 @@ class WarehouseFactory extends Factory
     {
         return [
             'uuid' => fake()->uuid(),
-            'location' => fake()->address(),
-            'name' => fake()->city(),
-            'country' => fake()->countryCode(),
-            'postcode' => fake()->postcode()
+            'name' => fake()->colorName(),
+            'street' => fake()->streetName(),
+            'city' => fake()->city(),
+            'postcode' => fake()->postcode(),
+            'country' => fake()->countryCode()
         ];
     }
 }

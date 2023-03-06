@@ -14,13 +14,13 @@ class Warehouse extends Model
     protected $fillable = [
         'uuid',
         'name',
-        'location',
+        'street',
+        'city',
         'country',
         'postcode'
     ];
 
-    public $timestamps = false;
-
+    public $timestamps = true;
 
     protected static function boot()
     {

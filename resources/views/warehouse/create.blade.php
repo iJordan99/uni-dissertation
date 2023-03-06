@@ -8,9 +8,9 @@
                     </div>
                     <form action="/location" method="POST">
                         @csrf
-                        <div class="mb-6 mt-4 w-1/3">
+                        <div class="mt-4 w-4/6">
                             <label class="block mb-2 font-bold text-sm text-gray-700 px-1" for="name">
-                                Name
+                                Location Name
                             </label>
                             <input class="border border-gray-400 p-2 w-full rounded-lg"
                                    type="text"
@@ -19,29 +19,29 @@
                                    required
                             >
                         </div>
-                        <div class="mb-6 mt-4 w-1/3">
-                            <label class="block mb-2 font-bold text-sm text-gray-700 px-1" for="location">
-                                Location Address
+                        <div class="w-4/6 mt-4">
+                            <label class="block mb-2 font-bold text-sm text-gray-700 px-1" for="street">
+                                Street
                             </label>
                             <input class="border border-gray-400 p-2 w-full rounded-lg"
                                    type="text"
-                                   name="location"
-                                   id="location"
+                                   name="street"
+                                   id="street"
                                    required
                             >
                         </div>
-                        <div class="mb-6 mt-4 w-1/3">
-                            <label class="block mb-2 font-bold text-sm text-gray-700 px-1" for="country">
-                                Country
+                        <div class="w-4/6 mt-4">
+                            <label class="block mb-2 font-bold text-sm text-gray-700 px-1" for="city">
+                                City
                             </label>
                             <input class="border border-gray-400 p-2 w-full rounded-lg"
                                    type="text"
-                                   name="country"
-                                   id="country"
+                                   name="city"
+                                   id="city"
                                    required
                             >
                         </div>
-                        <div class="mb-6 mt-4 w-1/3">
+                        <div class="w-4/6 mt-4 ">
                             <label class="block mb-2 font-bold text-sm text-gray-700 px-1" for="postcode">
                                 Postal Code
                             </label>
@@ -52,7 +52,18 @@
                                    required
                             >
                         </div>
-                        <button class="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded">
+                        <div class="mt-4 w-4/6">
+                            <label class="block mb-2 font-bold text-sm text-gray-700 px-1" for="country">
+                                Country
+                            </label>
+                            <input class="border border-gray-400 p-2 w-full rounded-lg"
+                                   type="text"
+                                   name="country"
+                                   id="country"
+                                   required
+                            >
+                        </div>
+                        <button class="mt-4 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded">
                             <input type="submit" value="Create"/>
                         </button>
                     </form>

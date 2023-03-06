@@ -12,7 +12,7 @@
                     </svg>
                 </a>
             </div>
-            <p class="text-gray-500">{{$warehouse->location}}</p>
+            <p class="text-gray-500">{{$warehouse->street}} {{ $warehouse->city }}, {{ $warehouse->country }}</p>
 
         </div>
 

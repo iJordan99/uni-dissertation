@@ -10,7 +10,7 @@
   <h3 class="text-sm text-gray-500">
     <a href="{{ route('warehouse.show', ['warehouse' => $warehouse->uuid]) }}">
       <span class="absolute inset-0"></span>
-        {{ $warehouse->location }}
+        {{ $warehouse->street }}
     </a>
   </h3>
 </div>

@@ -16,7 +16,6 @@ class WarehouseController extends Controller
 
     public function show(Warehouse $warehouse)
     {
-//        return $warehouse->load('storageBins.items')->storageBins;
         return view('warehouse.show', [
             'warehouse' => $warehouse->load('storageBins.items')
         ]);
@@ -27,9 +26,10 @@ class WarehouseController extends Controller
         Warehouse::create(
             request()->validate([
                 'name' => ['required', 'max:255', 'min:3'],
-                'location' => ['required','min:6'],
-                'country' => ['required','max:255'],
+                'street' => ['required'],
+                'city' => ['required'],
                 'postcode' => ['required', 'max:255', 'min:6'],
+                'country' => ['required','max:255'],
             ]));
 
         return redirect('/locations');
