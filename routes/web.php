@@ -15,6 +15,8 @@ use App\Http\Controllers\RegisterController;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::get('/', (fn () => redirect(route('login'))));
+
 Route::get('register', [RegisterController::class, 'create'])->name('register')->middleware('guest');
 Route::post( 'register', [RegisterController::class, 'store'])->name('register')->middleware('guest');
 
@@ -27,7 +29,6 @@ Route::get('locations', [WarehouseController::class, 'index'])->name('home')->mi
 Route::get('warehouse/{warehouse:uuid}',[WarehouseController::class, 'show'])->name('warehouse.show')->middleware('auth');
 Route::get('location/create', [WarehouseController::class, 'create'])->name('location.create')->middleware('auth');
 Route::post('/locations', [WarehouseController::class, 'store'])->middleware('auth');
-
 
 //Storage Bin Routes
 Route::get('/warehouse/{warehouse:uuid}/storage_bins/create', [StorageBinController::class, 'create'])->name('storage.create');
