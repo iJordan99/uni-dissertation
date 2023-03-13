@@ -9,7 +9,15 @@ class Item extends Model
 {
     use HasFactory;
 
-    public $timestamps = false;
+    public $timestamps = true;
+
+    public function scopeFilter($query){
+        if(request('search')){
+            $query
+                ->where('name','like', '%'. request('search') . '%');
+        }
+
+    }
 
     public function storageBins()
     {
