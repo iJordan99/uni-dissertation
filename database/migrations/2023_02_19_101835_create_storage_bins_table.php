@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('storage_bins', function (Blueprint $table) {
             $table->id();
             $table->foreignid('warehouse_id');
-            $table->string('identifier')->unique();
+            $table->string('identifier');
             $table->integer('capacity');
             $table->decimal('replenish', 8,2);
             $table->timestamps();
