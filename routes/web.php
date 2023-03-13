@@ -17,20 +17,20 @@ use App\Http\Controllers\RegisterController;
 */
 Route::get('/', (fn () => redirect(route('login'))));
 
-Route::get('register', [RegisterController::class, 'create'])->name('register')->middleware('guest');
-Route::post( 'register', [RegisterController::class, 'store'])->name('register')->middleware('guest');
+Route::get('Register', [RegisterController::class, 'create'])->name('register')->middleware('guest');
+Route::post( 'Register', [RegisterController::class, 'store'])->name('register')->middleware('guest');
 
-Route::get('login', [LoginController::class, 'create'])->name('login')->middleware('guest');
-Route::post('login', [LoginController::class, 'store'])->name('login');
+Route::get('Login', [LoginController::class, 'create'])->name('login')->middleware('guest');
+Route::post('Login', [LoginController::class, 'store'])->name('login');
 
-Route::get('logout', [LoginController::class, 'destroy'])->name('logout')->middleware('auth');
+Route::get('Logout', [LoginController::class, 'destroy'])->name('logout')->middleware('auth');
 
-Route::get('locations', [WarehouseController::class, 'index'])->name('home')->middleware('auth');
-Route::get('warehouse/{warehouse:uuid}',[WarehouseController::class, 'show'])->name('warehouse.show')->middleware('auth');
-Route::get('location/create', [WarehouseController::class, 'create'])->name('location.create')->middleware('auth');
-Route::post('/locations', [WarehouseController::class, 'store'])->middleware('auth');
+Route::get('Locations', [WarehouseController::class, 'index'])->name('home')->middleware('auth');
+Route::get('Warehouse/{warehouse:name}',[WarehouseController::class, 'show'])->name('warehouse.show')->middleware('auth');
+Route::get('Location/Create', [WarehouseController::class, 'create'])->name('location.create')->middleware('auth');
+Route::post('Locations/Create', [WarehouseController::class, 'store'])->name('location.store')->middleware('auth');
 
 //Storage Bin Routes
-Route::get('/warehouse/{warehouse:uuid}/storage_bins/create', [StorageBinController::class, 'create'])->name('storage.create');
-Route::post('/warehouse/{warehouse:uuid}/storage_bins', [StorageBinController::class, 'store']);
+Route::get('/Warehouse/{warehouse:name}/StorageBin/Create', [StorageBinController::class, 'create'])->name('storage.create');
+Route::post('/Warehouse/{warehouse:uuid}/StorageBin', [StorageBinController::class, 'store']);
 
