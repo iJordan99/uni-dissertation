@@ -32,5 +32,5 @@ Route::post('Locations/Create', [WarehouseController::class, 'store'])->name('lo
 
 //Storage Bin Routes
 Route::get('/Warehouse/{warehouse:name}/StorageBin/Create', [StorageBinController::class, 'create'])->name('storage.create');
-Route::post('/Warehouse/{warehouse:uuid}/StorageBin', [StorageBinController::class, 'store']);
+Route::post('/Warehouse/{warehouse:name}/StorageBin/Create', [StorageBinController::class, 'store']);
 
