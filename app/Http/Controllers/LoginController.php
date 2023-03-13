@@ -34,7 +34,7 @@ class LoginController extends Controller
 
         session()->regenerate();
 
-        return redirect('/locations')->with('success', 'Welcome Back!');
+        return redirect(route('home'))->with('success', 'Welcome Back!');
     }
 
 }

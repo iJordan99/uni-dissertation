@@ -8,7 +8,7 @@
         {{ $warehouse->name }}
     </p>
   <h3 class="text-sm text-gray-500">
-    <a href="{{ route('warehouse.show', ['warehouse' => $warehouse->uuid]) }}">
+    <a href="{{ route('warehouse.show', ['warehouse' => $warehouse->name]) }}">
       <span class="absolute inset-0"></span>
         {{ $warehouse->street }}
     </a>

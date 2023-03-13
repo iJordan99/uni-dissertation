@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Warehouse;
 use Illuminate\Http\Request;
 
 class StorageBinController extends Controller
 {
-    public function create()
+    public function create(Warehouse $warehouse)
     {
-        return 'hello';
+        return view('storage.create', [
+            'warehouse' => $warehouse
+        ]);
     }
 }

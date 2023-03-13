@@ -22,6 +22,6 @@ class RegisterController extends Controller
 
         auth()->login(User::create($attributes));
 
-        return redirect(route(route('home'))->with('success', 'Your account has been created.'));
+        return redirect(route('home'))->with('success', 'Your account has been created.');
     }
 }

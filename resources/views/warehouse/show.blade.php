@@ -3,7 +3,7 @@
         <div class="bg-white rounded-lg h-32 px-4 py-2 flex flex-col">
             <div class="flex align-middle mt-4 h-10 flex-row">
                 <h2 class="text-2xl text-gray-900 font-bold py-2">{{ $warehouse->name }}</h2>
-                <a href="/settings/warehouse/{{$warehouse->uuid}}"
+                <a href="/settings/warehouse/{{$warehouse->name}}"
                    class="text-blue-500 bg-transparent
                         h-8 text-center font-bold cursor-pointer text-2xl mt-3 ml-2">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
@@ -19,7 +19,7 @@
         <section class="px-2 py-2 mt-6 flex flex-row">
             <h2 class="text-xl text-gray-500 font-bold py-2">Storage Bins</h2>
             <div class="h-14 w-8 mt-1 ml-2">
-                <a href="{{ route('storage.create', ['warehouse' => $warehouse->uuid]) }}"
+                <a href="{{ route('storage.create', ['warehouse' => $warehouse->name]) }}"
                    class="text-blue-500 bg-transparent
                         h-8 text-center font-bold cursor-pointer text-2xl">+</a>
             </div>
