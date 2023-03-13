@@ -1,3 +1,10 @@
+@php
+
+    $active = 'bg-blue-400 text-white py-3 rounded-md text-sm font-medium pl-3';
+    $default = 'text-white hover:bg-blue-400 hover:text-white py-3 rounded-md text-sm font-medium mt-2 pl-3';
+
+@endphp
+
 <nav class="bg-blue-500 w-100 h-screen py-12 px-8 flex flex-col justify-center">
   <div class="flex-shrink-0 flex items-center ">
     <h1 class="font-bold text-2xl text-white">StockManager</h1>
@@ -6,11 +13,16 @@
   <div class="sm:block pt-5">
     <div class="flex flex-col">
       <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
-      <a href="{{ route('home') }}" class="bg-blue-400 text-white py-3 rounded-md text-sm font-medium pl-3" aria-current="page">Locations</a>
 
-      <a href="#" class="text-white hover:bg-blue-400 hover:text-white py-3 rounded-md text-sm font-medium mt-2 pl-3">Items</a>
 
-      <a href="#" class="text-white hover:bg-blue-400 hover:text-white py-3 rounded-md text-sm font-medium mt-2 pl-3">Alerts</a>
+
+      <a href="{{ route('home') }}" class="{{ request()->routeIs('home') ? $active : $default }}" aria-current="page">Locations</a>
+
+      <a href="{{ route('items') }}" class="{{ request()->routeIs('items') ? $active : $default }}" aria-current="page">Items</a>
+
+      <a href="#" class="{{ request()->routeIs('alerts') ? $active : $default }}">Alerts</a>
+
+
       <div class="ml-1 relative mt-10 flex pr-3 place-content-between">
         <p class="text-white text-sm">{{ auth()->user()->name }}</p>
         <div x-data="{ open: false }">
