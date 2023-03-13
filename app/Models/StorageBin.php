@@ -9,6 +9,12 @@ class StorageBin extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'identifier',
+        'capacity',
+        'replenish'
+    ];
+
     public function warehouse()
     {
         return $this->belongsTo(Warehouse::class);
