@@ -1,8 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Models\Warehouse;
-use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class WarehouseController extends Controller
@@ -16,24 +16,23 @@ class WarehouseController extends Controller
 
     public function show(Warehouse $warehouse)
     {
-        return view('warehouse.show',[
-            'warehouse' => $warehouse
+        return view('warehouse.show', [
+            'warehouse' => $warehouse->load('storageBins.items')
         ]);
     }
-
 
     public function store()
     {
         Warehouse::create(
             request()->validate([
-                'uuid' => uuid_create(),
                 'name' => ['required', 'max:255', 'min:3'],
-                'location' => ['required','min:6'],
-                'country' => ['required','max:255'],
+                'street' => ['required'],
+                'city' => ['required'],
                 'postcode' => ['required', 'max:255', 'min:6'],
+                'country' => ['required','max:255'],
             ]));
 
-        return redirect('/');
+        return redirect('/locations');
     }
     public function create()
     {

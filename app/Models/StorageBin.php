@@ -9,13 +9,14 @@ class StorageBin extends Model
 {
     use HasFactory;
 
-    public function Warehouse()
+    public function warehouse()
     {
         return $this->belongsTo(Warehouse::class);
     }
 
-    public function Items()
+    public function items()
     {
-        return $this->belongsToMany(Item::class)->withTimestamps();
+        return $this->belongsToMany(Item::class)->withPivot('amount');
     }
+
 }
