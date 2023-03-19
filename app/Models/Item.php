@@ -14,7 +14,8 @@ class Item extends Model
     public function scopeFilter($query){
         if(request('search')){
             $query
-                ->where('name','like', '%'. request('search') . '%');
+                ->where('name','like', '%'. request('search') . '%')
+                ->orWhere('reference','like','%'.request('search') .'%');
         }
 
     }
