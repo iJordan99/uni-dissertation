@@ -2,14 +2,45 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Item;
 use App\Models\StorageBin;
 use App\Models\Warehouse;
-use Clockwork\Storage\Storage;
-use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class StorageBinController extends Controller
 {
-    public function create(Warehouse $warehouse)
+    public function show(StorageBin $storageBin)
+    {
+        return view('storage.show',[
+            'storage' => $storageBin->load('items'),
+            'warehouse' => Warehouse::find($storageBin->warehouse_id),
+            'items' => Item::all()
+        ]);
+    }
+
+    public function add(StorageBin $storageBin)
+    {
+        $req = request()->validate([
+            'item' => ['required'],
+            'quantity' => ['required', 'min:1']
+        ]);
+
+        $existingItem = $storageBin->items->where('id', $req['item'])->first();
+
+        if (!$existingItem)
+        {
+            $storageBin->items()->attach($req['item'],['quantity' => $req['quantity']]);
+            return redirect(route('storage.show',[ 'storageBin' => $storageBin]))->with('success', 'Item added');
+        }
+
+        $existingQuantity = $existingItem->pivot->quantity;
+        $newQuantity = $existingQuantity + $req['quantity'];
+        $storageBin->items()->syncWithoutDetaching([$req['item'] => ['quantity' => $newQuantity]]);
+        return redirect(route('storage.show',[ 'storageBin' => $storageBin]))->with('success', 'Item updated');
+    }
+
+
+    public function create(Warehouse $warehouse) : View
     {
         return view('storage.create', [
             'warehouse' => $warehouse
@@ -19,7 +50,7 @@ class StorageBinController extends Controller
     public function store(Warehouse $warehouse)
     {
         $attr = request()->validate([
-            'identifier' => ['required','max:10', 'min:3'],
+            'identifier' => ['required','max:10', 'min:2'],
             'capacity' => ['required', 'numeric'],
             'replenish' => ['required', 'decimal:2', 'between:0,100'],
         ]);

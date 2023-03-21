@@ -17,7 +17,7 @@ return new class extends Migration
             $table->primary(['storage_bin_id', 'item_id']);
             $table->foreignId('storage_bin_id');
             $table->foreignId('item_id');
-            $table->integer('amount');
+            $table->integer('quantity');
             $table->timestamps();
         });
     }

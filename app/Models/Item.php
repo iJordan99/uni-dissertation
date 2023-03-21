@@ -22,6 +22,6 @@ class Item extends Model
 
     public function storageBins()
     {
-        return $this->belongsToMany(StorageBin::class)->withPivot('amount');
+        return $this->belongsToMany(StorageBin::class)->withPivot('quantity');
     }
 }

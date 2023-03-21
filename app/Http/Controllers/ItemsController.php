@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 use App\Models\Item;
+use App\Models\StorageBin;
+use App\Models\Warehouse;
+
 class ItemsController extends Controller
 {
     public function index()

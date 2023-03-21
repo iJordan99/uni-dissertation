@@ -1,12 +1,10 @@
-    @include('partials.head')
+@include('partials.head')
 
-    <main class="grid grid-cols-5">
-      <x-_nav/>
-      <section class="h-screen col-span-4 bg-blue-100 overflow-scroll sm:overflow-y-auto sm:max-h-screen">
-          <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 m:py-24 lg:py-10 lg:max-w-none">
-            {{ $slot }}
-          </main>
-      </section>
-    </main>
+<main class="flex">
+    <x-_nav/>
+    <section class="w-full p-10 h-screen overflow-scroll sm:overflow-y-auto md:p-5 justify-center">
+        {{ $slot }}
+    </section>
+</main>
 
 <x-flash/>
