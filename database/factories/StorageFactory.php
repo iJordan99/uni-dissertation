@@ -2,13 +2,13 @@
 
 namespace Database\Factories;
 
-use App\Models\StorageBin;
+use App\Models\Storage;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends Factory<StorageBin>
+ * @extends Factory<Storage>
  */
-class StorageBinFactory extends Factory
+class StorageFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -19,7 +19,7 @@ class StorageBinFactory extends Factory
     {
         return [
             'identifier' => fake()->word(),
-            'warehouse_id' => StorageBin::factory(),
+            'warehouse_id' => Storage::factory(),
             'capacity' => 5000,
             'replenish' => 20
         ];

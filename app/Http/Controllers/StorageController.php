@@ -3,40 +3,38 @@
 namespace App\Http\Controllers;
 
 use App\Models\Item;
-use App\Models\StorageBin;
+use App\Models\Storage;
 use App\Models\Warehouse;
 use Illuminate\View\View;
 
-class StorageBinController extends Controller
+class StorageController extends Controller
 {
-    public function show(StorageBin $storageBin)
+    public function show(Storage $storage)
     {
         return view('storage.show',[
-            'storage' => $storageBin->load('items'),
-            'warehouse' => Warehouse::find($storageBin->warehouse_id),
+            'storage' => $storage->load('items'),
+            'warehouse' => Warehouse::find($storage->warehouse_id),
             'items' => Item::all()
         ]);
     }
 
-    public function add(StorageBin $storageBin)
+    public function add(Storage $storage)
     {
         $req = request()->validate([
             'item' => ['required'],
             'quantity' => ['required', 'min:1']
         ]);
 
-        $existingItem = $storageBin->items->where('id', $req['item'])->first();
+        $existingItem = $storage->items->where('id', $req['item'])->first();
 
         if (!$existingItem)
-        {
-            $storageBin->items()->attach($req['item'],['quantity' => $req['quantity']]);
-            return redirect(route('storage.show',[ 'storageBin' => $storageBin]))->with('success', 'Item added');
+        { $storage->items()->attach($req['item'],['quantity' => $req['quantity']]);
+            return redirect(route('storage.show',[ 'storage' => $storage]))->with('success', 'Item added');
         }
 
         $existingQuantity = $existingItem->pivot->quantity;
-        $newQuantity = $existingQuantity + $req['quantity'];
-        $storageBin->items()->syncWithoutDetaching([$req['item'] => ['quantity' => $newQuantity]]);
-        return redirect(route('storage.show',[ 'storageBin' => $storageBin]))->with('success', 'Item updated');
+        $newQuantity = $existingQuantity + $req['quantity']; $storage->items()->syncWithoutDetaching([$req['item'] => ['quantity' => $newQuantity]]);
+        return redirect(route('storage.show',[ 'storage' => $storage]))->with('success', 'Item updated');
     }
 
 
@@ -55,7 +53,7 @@ class StorageBinController extends Controller
             'replenish' => ['required', 'decimal:2', 'between:0,100'],
         ]);
 
-        $warehouse->storageBins()->create($attr);
+        $warehouse->storage()->create($attr);
 
         return redirect(route('warehouse.show', ['warehouse' => $warehouse->name]))->with('success', 'Storage bin created');
     }

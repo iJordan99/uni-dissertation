@@ -18,7 +18,7 @@ class WarehouseController extends Controller
     {
         return view('warehouse.show', [
             'warehouse' => $warehouse,
-            'storageBins' =>  $warehouse->storageBins
+            'storages' =>  $warehouse->storage
         ]);
     }
 

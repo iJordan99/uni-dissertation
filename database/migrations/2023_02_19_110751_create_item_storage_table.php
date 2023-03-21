@@ -13,9 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('item_storage_bin', function (Blueprint $table) {
-            $table->primary(['storage_bin_id', 'item_id']);
-            $table->foreignId('storage_bin_id');
+        Schema::create('item_storage', function (Blueprint $table) {
+            $table->primary(['storage_id', 'item_id']);
+            $table->foreignId('storage_id');
             $table->foreignId('item_id');
             $table->integer('quantity');
             $table->timestamps();
@@ -29,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('item_storage_bin');
+        Schema::dropIfExists('item_storage');
     }
 };

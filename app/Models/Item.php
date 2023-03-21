@@ -20,8 +20,8 @@ class Item extends Model
 
     }
 
-    public function storageBins()
+    public function storage()
     {
-        return $this->belongsToMany(StorageBin::class)->withPivot('quantity');
+        return $this->belongsToMany(Storage::class)->withPivot('quantity');
     }
 }

@@ -14,8 +14,8 @@
 
     <section>
         <div class="lg:grid lg:grid-cols-6 md:grid md:grid-cols-3 rounded-lg gap-x-4 gap-y-4">
-            @foreach ($storageBins as $storageBin)
-                <x-storage-bin :storageBin="$storageBin" :warehouse="$warehouse"/>
+            @foreach ($storages as $storage)
+                <x-storage :storage="$storage" :warehouse="$warehouse"/>
             @endforeach
         </div>
     </section>

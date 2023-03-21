@@ -9,7 +9,7 @@
             <a class="text-blue-500 bg-transparent h-8 text-center font-bold cursor-pointer text-2xl" @click="showModal = true">+</a>
             <x-form.modal-form-body>
                 <x-form.layout title="Add Items" action="{{ route('storage.add', [
-                        'storageBin' => $storage,
+                        'storage' => $storage,
                     ]) }}">
 
                     <x-form.dropdown name="item" selected="Choose an item to add" :options="$items"/>

@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\ItemsController;
 use App\Http\Controllers\LoginController;
-use App\Http\Controllers\StorageBinController;
+use App\Http\Controllers\StorageController;
 use App\Http\Controllers\WarehouseController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RegisterController;
@@ -24,10 +24,10 @@ Route::get('location/create', [WarehouseController::class, 'create'])->name('loc
 Route::post('locations/create', [WarehouseController::class, 'store'])->name('location.store')->middleware('auth');
 
 //storage
-Route::get('storagebin/{storageBin:identifier}', [StorageBinController::class, 'show'])->name('storage.show')->middleware('auth');
-Route::post('storagebin/{storageBin:identifier}', [StorageBinController::class, 'add'])->name('storage.add')->middleware('auth');
-Route::get('{warehouse:name}/storagebin/create', [StorageBinController::class, 'create'])->name('storage.create');
-Route::post('{warehouse:name}/storagebin/create', [StorageBinController::class, 'store']);
+Route::get('storage/{storage:identifier}', [StorageController::class, 'show'])->name('storage.show')->middleware('auth');
+Route::post('storage/{storage:identifier}', [StorageController::class, 'add'])->name('storage.add')->middleware('auth');
+Route::get('{warehouse:name}/storage/create', [StorageController::class, 'create'])->name('storage.create');
+Route::post('{warehouse:name}/storage/create', [StorageController::class, 'store']);
 
 //items
 Route::get('items', [ItemsController::class, 'index'])->name('items')->middleware('auth');
