@@ -1,7 +1,7 @@
 @php
 
     $active = 'bg-blue-400 text-white py-3 rounded-md text-sm font-medium pl-3';
-    $default = 'text-white hover:bg-blue-400 hover:text-white py-3 rounded-md text-sm font-medium mt-2 pl-3';
+    $default = 'text-white hover:bg-blue-400 hover:text-white py-4 rounded-md text-sm font-medium mt-2 mb-2 pl-3';
 
 @endphp
 

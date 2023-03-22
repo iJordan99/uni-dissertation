@@ -9,10 +9,10 @@
         @if($item->pivot)
             <h3>
                 <span class="absolute inset-0"></span>
-                <p>[{{ $item->pivot->quantity }}] {{ $item->name }}</p>
+                <p>[{{ $item->pivot->quantity }}] {{ ucwords($item->name) }}</p>
             </h3>
         @else
-            <p>{{ $item->name }}</p>
+            <p>{{ ucwords($item->name) }}</p>
         @endif
     </div>
     <div class="flex justify-between text-m text-gray-500">

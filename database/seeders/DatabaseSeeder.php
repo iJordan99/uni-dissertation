@@ -24,7 +24,7 @@ class DatabaseSeeder extends Seeder
     {
         Warehouse::factory(5)->create();
         Item::factory(15)->create();
-        Storage::factory(5)->create([
+        Storage::factory(50)->create([
             'warehouse_id' => 1
         ]);
     }

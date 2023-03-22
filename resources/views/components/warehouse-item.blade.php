@@ -5,12 +5,12 @@
         <img src="{{ asset('Images/warehouse.svg') }}" alt="" style="max-height: 100%" >
     </div>
     <p class="mt-6 text-base font-semibold text-gray-900">
-        {{ $warehouse->name }}
+        {{ ucwords($warehouse->name) }}
     </p>
   <h3 class="text-sm text-gray-500">
     <a href="{{ route('warehouse.show', ['warehouse' => $warehouse->name]) }}">
       <span class="absolute inset-0"></span>
-        {{ $warehouse->street }}
+        {{ ucwords($warehouse->street) }}
     </a>
   </h3>
 </div>
