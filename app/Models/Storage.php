@@ -16,6 +16,16 @@ class Storage extends Model
         'replenish'
     ];
 
+    public function scopeFilter($query, Warehouse $warehouse){
+        if(request('search')){
+            $query
+                ->where('identifier','like', '%'. request('search') . '%')
+                ->where('warehouse_id', $warehouse->id)
+                ->orWhereHas('items', fn($query) => $query->where('name', 'like', '%' . request('search') . '%'));;
+        }
+
+    }
+
     public function warehouse()
     {
         return $this->belongsTo(Warehouse::class);
