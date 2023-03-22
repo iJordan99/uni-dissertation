@@ -32,4 +32,5 @@ Route::get('item/{item:name}', [StorageController::class, 'item'])->name('storag
 
 //items
 Route::get('items', [ItemsController::class, 'index'])->name('items')->middleware('auth');
-Route::post('items', [ItemsController::class, 'index'])->name('item.create')->middleware('auth');
+Route::get('items/create', [ItemsController::class, 'create'])->name('item.create')->middleware('auth');
+Route::post('items/create', [ItemsController::class, 'store'])->name('item.create')->middleware('auth');

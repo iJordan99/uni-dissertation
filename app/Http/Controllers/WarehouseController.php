@@ -26,14 +26,14 @@ class WarehouseController extends Controller
     {
         Warehouse::create(
             request()->validate([
-                'name' => ['required', 'max:255', 'min:3'],
+                'name' => ['required', 'max:255', 'min:3', 'unique:warehouses,name'],
                 'street' => ['required'],
                 'city' => ['required'],
                 'postcode' => ['required', 'max:255', 'min:6'],
                 'country' => ['required','max:255'],
             ]));
 
-        return redirect('/locations');
+        return redirect(route('home'))->with('success', 'Warehouse created');
     }
     public function create()
     {
