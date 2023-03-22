@@ -14,13 +14,21 @@ class Item extends Model
     public function scopeFilter($query){
         if(request('search')){
             $query
-                ->where('name','like', '%'. request('search') . '%');
+                ->where('name','like', '%'. request('search') . '%')
+                ->orWhere('reference','like','%'.request('search') .'%');
         }
 
     }
 
-    public function storageBins()
+    public function storage()
     {
-        return $this->belongsToMany(StorageBin::class)->withPivot('amount');
+        return $this->belongsToMany(Storage::class)->withPivot('quantity')->withTimestamps();
+    }
+
+    public function warehouse()
+    {
+        return $this->belongsToMany(Warehouse::class, 'item_storage')
+            ->withPivot('storage_id', 'quantity')
+            ->using(Storage::class);
     }
 }

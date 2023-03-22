@@ -5,9 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class StorageBin extends Model
+class Storage extends Model
 {
     use HasFactory;
+    public $timestamps = true;
 
     protected $fillable = [
         'identifier',
@@ -22,7 +23,7 @@ class StorageBin extends Model
 
     public function items()
     {
-        return $this->belongsToMany(Item::class)->withPivot('amount');
+        return $this->belongsToMany(Item::class)->withPivot('quantity')->withTimestamps();
     }
 
 }

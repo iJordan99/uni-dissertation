@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('storage_bins', function (Blueprint $table) {
+        Schema::create('storages', function (Blueprint $table) {
             $table->id();
             $table->foreignid('warehouse_id');
             $table->string('identifier');
@@ -30,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('storage_bins');
+        Schema::dropIfExists('storage');
     }
 };
