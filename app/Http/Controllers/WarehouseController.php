@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Storage;
 use App\Models\Warehouse;
 use Illuminate\View\View;
 
@@ -17,7 +18,8 @@ class WarehouseController extends Controller
     public function show(Warehouse $warehouse)
     {
         return view('warehouse.show', [
-            'warehouse' => $warehouse->load('storageBins.items')
+            'warehouse' => $warehouse,
+            'storages' => Storage::filter($warehouse)->paginate(40)
         ]);
     }
 
@@ -25,14 +27,14 @@ class WarehouseController extends Controller
     {
         Warehouse::create(
             request()->validate([
-                'name' => ['required', 'max:255', 'min:3'],
+                'name' => ['required', 'max:255', 'min:3', 'unique:warehouses,name'],
                 'street' => ['required'],
                 'city' => ['required'],
                 'postcode' => ['required', 'max:255', 'min:6'],
                 'country' => ['required','max:255'],
             ]));
 
-        return redirect('/locations');
+        return redirect(route('home'))->with('success', 'Warehouse created');
     }
     public function create()
     {

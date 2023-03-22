@@ -14,8 +14,15 @@ return new class () extends Migration {
     {
         Schema::create('items', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('reference');
+            $table->string('name')->unique();
+            $table->string('reference')->unique();
+            $table->decimal('weight');
+            $table->decimal('height');
+            $table->decimal('width');
+            $table->decimal('length');
+            $table->boolean('perishable')->default(0);
+            $table->integer('shelf')->default(0);
+            $table->timestamps();
         });
     }
 

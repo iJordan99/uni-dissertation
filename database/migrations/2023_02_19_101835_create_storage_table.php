@@ -13,12 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('storage_bins', function (Blueprint $table) {
+        Schema::create('storages', function (Blueprint $table) {
             $table->id();
             $table->foreignid('warehouse_id');
             $table->string('identifier');
-            $table->integer('max_capacity');
-            $table->decimal('replenish_percent', 8,2);
+            $table->integer('capacity');
+            $table->decimal('replenish', 8,2);
             $table->timestamps();
         });
     }
@@ -30,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('storage_bins');
+        Schema::dropIfExists('storage');
     }
 };
