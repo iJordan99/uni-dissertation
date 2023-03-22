@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Storage extends Model
 {
     use HasFactory;
+    public $timestamps = true;
 
     protected $fillable = [
         'identifier',
@@ -22,7 +23,7 @@ class Storage extends Model
 
     public function items()
     {
-        return $this->belongsToMany(Item::class)->withPivot('quantity');
+        return $this->belongsToMany(Item::class)->withPivot('quantity')->withTimestamps();
     }
 
 }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Item;
 use App\Models\Storage;
 use App\Models\Warehouse;
+use Illuminate\Support\Collection;
 use Illuminate\View\View;
 
 class StorageController extends Controller
@@ -37,6 +38,25 @@ class StorageController extends Controller
         return redirect(route('storage.show',[ 'storage' => $storage]))->with('success', 'Item updated');
     }
 
+    public function remove(Storage $storage)
+    {
+        $req = request()->validate([
+            'item' => ['required'],
+            'quantity' => ['required', 'min:1']
+        ]);
+
+        $existingItem = $storage->items->where('id', $req['item'])->first();
+
+        if (!$existingItem)
+        {
+            return redirect(route('storage.show',[ 'storage' => $storage]))->with('Error', 'Item doesnt exist');
+        }
+
+        $existingQuantity = $existingItem->pivot->quantity;
+        $newQuantity = $existingQuantity - $req['quantity']; $storage->items()->syncWithoutDetaching([$req['item'] => ['quantity' => $newQuantity]]);
+        return redirect(route('storage.show',[ 'storage' => $storage]))->with('success', 'Item updated');
+    }
+
 
     public function create(Warehouse $warehouse) : View
     {
@@ -57,5 +77,24 @@ class StorageController extends Controller
 
         return redirect(route('warehouse.show', ['warehouse' => $warehouse->name]))->with('success', 'Storage bin created');
     }
+
+    public function item(Item $item)
+    {
+        $warehouses = new Collection();
+
+        $storages = $item->storage;
+        foreach ($storages as $storage)
+        {
+            $storage->warehouse;
+        }
+//        return $storages;
+
+        return view('storage.item', [
+            'item' => $item,
+            'storages' => $storages,
+            'warehouses' => $warehouses
+        ]);
+    }
+
 
 }

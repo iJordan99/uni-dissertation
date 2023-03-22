@@ -22,6 +22,13 @@ class Item extends Model
 
     public function storage()
     {
-        return $this->belongsToMany(Storage::class)->withPivot('quantity');
+        return $this->belongsToMany(Storage::class)->withPivot('quantity')->withTimestamps();
+    }
+
+    public function warehouse()
+    {
+        return $this->belongsToMany(Warehouse::class, 'item_storage')
+            ->withPivot('storage_id', 'quantity')
+            ->using(Storage::class);
     }
 }

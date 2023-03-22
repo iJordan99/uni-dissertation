@@ -9,6 +9,6 @@
             @endforeach
         </div>
         {{ $items->links() }}
-</section>
+    </section>
 </x-layout>
 
