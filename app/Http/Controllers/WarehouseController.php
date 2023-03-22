@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Storage;
 use App\Models\Warehouse;
 use Illuminate\View\View;
 
@@ -18,7 +19,7 @@ class WarehouseController extends Controller
     {
         return view('warehouse.show', [
             'warehouse' => $warehouse,
-            'storages' =>  $warehouse->storage
+            'storages' => Storage::filter($warehouse)->paginate(40)
         ]);
     }
 
