@@ -1,7 +1,7 @@
 <x-layout>
     <x-header header="{{ ucwords($item->name) }}"
               href="/settings/warehouse/storage/{{$item->name}}"
-              subtext=""/>
+              subtext="Total : {{ $storages->pluck('pivot.quantity')->sum() }}"/>
 
 
     <div class="relative overflow-x-auto shadow-md sm:rounded-lg mt-4" >

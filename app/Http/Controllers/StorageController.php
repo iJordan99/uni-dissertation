@@ -21,21 +21,29 @@ class StorageController extends Controller
 
     public function add(Storage $storage)
     {
+
+        $maxAmount = $storage->capacity - $storage->items->pluck('pivot.quantity')->sum();
+
         $req = request()->validate([
             'item' => ['required'],
             'quantity' => ['required', 'min:1']
         ]);
 
-        $existingItem = $storage->items->where('id', $req['item'])->first();
+        if (!$req['quantity'] > $maxAmount)
+        {
+            $existingItem = $storage->items->where('id', $req['item'])->first();
 
-        if (!$existingItem)
-        { $storage->items()->attach($req['item'],['quantity' => $req['quantity']]);
-            return redirect(route('storage.show',[ 'storage' => $storage]))->with('success', 'Item added');
+            if (!$existingItem)
+            { $storage->items()->attach($req['item'],['quantity' => $req['quantity']]);
+                return redirect(route('storage.show',[ 'storage' => $storage]))->with('success', 'Item added');
+            }
+
+            $existingQuantity = $existingItem->pivot->quantity;
+            $newQuantity = $existingQuantity + $req['quantity']; $storage->items()->syncWithoutDetaching([$req['item'] => ['quantity' => $newQuantity]]);
+            return redirect(route('storage.show',[ 'storage' => $storage]))->with('success', 'Item updated');
+
         }
-
-        $existingQuantity = $existingItem->pivot->quantity;
-        $newQuantity = $existingQuantity + $req['quantity']; $storage->items()->syncWithoutDetaching([$req['item'] => ['quantity' => $newQuantity]]);
-        return redirect(route('storage.show',[ 'storage' => $storage]))->with('success', 'Item updated');
+        return redirect(route('storage.show',[ 'storage' => $storage]))->with('error', 'Capacity reached');
     }
 
     public function remove(Storage $storage)

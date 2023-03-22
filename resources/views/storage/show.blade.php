@@ -1,7 +1,7 @@
 <x-layout>
     <x-header header="{{ ucwords($storage->identifier) }}"
               href="/settings/warehouse/storagebin/{{$storage->identifier}}"
-              subtext="{{ $warehouse->name }}"/>
+              subtext="{{ ucwords($warehouse->name) }}"/>
 
     <section class="px-2 py-2 mt-6 flex flex-row">
         <h2 class="text-xl text-gray-500 font-bold py-2">Items</h2>

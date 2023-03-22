@@ -10,6 +10,20 @@ class Item extends Model
     use HasFactory;
 
     public $timestamps = true;
+    protected $attributes = [
+        'perishable' => 0
+    ];
+
+    protected $fillable =[
+        'name',
+        'reference',
+        'weight',
+        'height',
+        'width',
+        'length',
+        'perishable',
+        'shelf'
+    ];
 
     public function scopeFilter($query){
         if(request('search')){

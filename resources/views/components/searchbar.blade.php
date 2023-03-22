@@ -1,4 +1,4 @@
-<div class="relative flex lg:inline-flex items-center border-b-2 h-10 ml-1">
+<div class="relative flex lg:inline-flex items-center border-b-2 h-10 ml-0.5">
     <form method="GET" action="#" class="w-full">
         <input  type="text"
                 name="search"
