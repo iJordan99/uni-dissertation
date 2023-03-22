@@ -19,7 +19,7 @@ class WarehouseFactory extends Factory
     {
         return [
             'uuid' => fake()->uuid(),
-            'name' => fake()->colorName(),
+            'name' => fake()->unique()->colorName(),
             'street' => fake()->streetName(),
             'city' => fake()->city(),
             'postcode' => fake()->postcode(),

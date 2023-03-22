@@ -18,8 +18,12 @@ class ItemFactory extends Factory
     public function definition()
     {
         return [
-            'name' => fake()->word(),
+            'name' => fake()->unique()->name(),
             'reference' => fake()->ean13(),
+            'weight' => fake()->numberBetween(0,250),
+            'height' => fake()->numberBetween(0,250),
+            'width' => fake()->numberBetween(0,250),
+            'length' => fake()->numberBetween(0,250),
         ];
     }
 }
