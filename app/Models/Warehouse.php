@@ -38,14 +38,14 @@ class Warehouse extends Model
 
     }
 
-    public function storageBins()
+    public function storage()
     {
-        return $this->hasMany(StorageBin::class);
+        return $this->hasMany(Storage::class);
     }
 
     public function items()
     {
-        return $this->hasManyThrough(Item::Class,StorageBin::class);
+        return $this->hasManyThrough(Item::Class,Storage::class);
     }
 
 
