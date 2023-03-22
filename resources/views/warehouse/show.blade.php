@@ -1,6 +1,7 @@
 <x-layout>
-    <x-header header="{{ ucwords($warehouse->name) }}" href="/settings/warehouse/{{$warehouse->name}}"
-    subtext="{{ ucwords($warehouse->street) }} {{ $warehouse->city }}, {{ $warehouse->country }}"></x-header>
+    <x-search-header title=" {{ ucwords($warehouse->name) }} Storages"
+                     route="{{ route('warehouse.show', ['warehouse' => $warehouse]) }}"
+                     resource="Storages"/>
 
     <section class="px-2 py-2 mt-6 flex flex-row">
         <h2 class="text-xl text-gray-500 font-bold py-2">Storage Bins</h2>
@@ -18,6 +19,7 @@
                 <x-storage :storage="$storage" :warehouse="$warehouse"/>
             @endforeach
         </div>
+        {{ $storages->links() }}
     </section>
 </x-layout>
 
