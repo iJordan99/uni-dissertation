@@ -19,7 +19,11 @@ class WarehouseController extends Controller
     {
         return view('warehouse.show', [
             'warehouse' => $warehouse,
-            'storages' => Storage::filter($warehouse)->paginate(40)
+            'storages' => Storage::where('warehouse_id', $warehouse->id)
+                ->filter()
+                ->latest()
+                ->paginate(30)
+                ->withQueryString()
         ]);
     }
 
