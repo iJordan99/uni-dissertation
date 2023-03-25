@@ -16,14 +16,12 @@ class Storage extends Model
         'replenish'
     ];
 
-    public function scopeFilter($query, Warehouse $warehouse){
+    public function scopeFilter($query){
         if(request('search')){
             $query
                 ->where('identifier','like', '%'. request('search') . '%')
-                ->where('warehouse_id', $warehouse->id)
-                ->orWhereHas('items', fn($query) => $query->where('name', 'like', '%' . request('search') . '%'));;
+                ->orwhereHas('items', fn ($q) => $q->where('name', 'like', '%' . request('search') . '%'));
         }
-
     }
 
     public function warehouse()

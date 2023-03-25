@@ -28,7 +28,8 @@ Route::get('storage/{storage:identifier}', [StorageController::class, 'show'])->
 Route::post('storage/{storage:identifier}', [StorageController::class, 'add'])->name('storage.item.add')->middleware('auth');
 Route::get('{warehouse:name}/storage/create', [StorageController::class, 'create'])->name('storage.create');
 Route::post('{warehouse:name}/storage/create', [StorageController::class, 'store']);
-Route::get('item/{item:name}', [StorageController::class, 'item'])->name('storage.item.info')->middleware('auth');
+
+Route::get('item/{item:name}', [StorageController::class, 'item'])->name('item.locations')->middleware('auth');
 
 //items
 Route::get('items', [ItemsController::class, 'index'])->name('items')->middleware('auth');

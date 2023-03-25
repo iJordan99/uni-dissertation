@@ -1,5 +1,5 @@
 @props(['item', 'storage'])
-<a href="{{route('storage.item.info', ['item' => $item])}}">
+<a href="{{route('item.locations', ['item' => $item])}}">
 <div class="group relative bg-transparent">
         <div class="relative w-full h-75 bg-white rounded-lg overflow-hidden group-hover:bg-gray-100 sm:aspect-w-2 sm:aspect-h-1 sm:h-64 lg:aspect-w-1 lg:aspect-h-1 flex justify-center items-center ">
     {{--        https://iconscout.com/icon/box-package-parcels-logistic-delivery-packed-shipping-11--}}
