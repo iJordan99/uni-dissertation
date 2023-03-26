@@ -1,7 +1,8 @@
 <x-layout>
     <x-header header="{{ ucwords($item->name) }}"
-              href="{{ route('item.settings', ['item' => $item->name]) }}"
-              subtext=""/>
+              subtext=""
+              url="{{ route('item.locations', ['item' => $item]) }}"
+              href=""/>
 
     <section class="mt-6">
         <x-form.layout title="Settings" action="{{ route('item.update', ['item' => $item]) }}">
@@ -17,9 +18,10 @@
                     <x-form.input name="shelf" type="number" value="{{ $item->perishable }}"/>
                 </div>
             </div>
-            <x-form.input name="reorder" type="number" value="{{ $item->reorder }}"/>
-            <x-form.input name="cost" type="decimal" value="{{ $item->cost }}"/>
-            <x-form.input name="{{ str_replace('_',' ', 'selling_price')}}" type="number" value="{{ $item->selling_price }}"/>
+            <x-form.input name="reorder" value="{{ $item->reorder }}"/>
+            <x-form.input name="cost" value="{{ $item->cost }}"/>
+            <x-form.input name="price" value="{{$item->price}}"/>
+{{--            <x-form.input name="{{ str_replace('_', ' ' ,'selling_price')}}" value="{{$item->selling_price}}"/>--}}
             <x-form.button>Update</x-form.button>
         </x-form.layout>
     </section>

@@ -22,36 +22,48 @@ class StorageController extends Controller
 
     public function add(Storage $storage)
     {
-
-        $maxAmount = $storage->capacity - $storage->items->pluck('pivot.quantity')->sum();
-
         $req = request()->validate([
             'item' => ['required'],
             'quantity' => ['required', 'min:1']
         ]);
 
-        try {
-            if ($req['quantity'] < $maxAmount)
-            {
-                $existingItem = $storage->items->where('id', $req['item'])->first();
+        $maxAmount = $storage->capacity - $storage->items->pluck('pivot.quantity')->sum();
 
-                if (!$existingItem)
-                {
-                    $storage->items()->attach($req['item'],['quantity' => $req['quantity']]);
-                    return redirect(route('storage.show',[ 'storage' => $storage]))->with('success', 'Item added');
-                }
-
-                $existingQuantity = $existingItem->pivot->quantity;
-                $newQuantity = $existingQuantity + $req['quantity']; $storage->items()->syncWithoutDetaching([$req['item'] => ['quantity' => $newQuantity]]);
-                return redirect(route('storage.show',[ 'storage' => $storage]))->with('success', 'Item updated');
-
-            }
-            return redirect(route('storage.show',[ 'storage' => $storage]))->with('error', 'Capacity reached');
-        } catch (Exception)
+        if (!$storage->items->count() > 0)
         {
-            return redirect(route('storage.show',[ 'storage' => $storage]))->with('error', 'Something went wrong');
+            $this->addItemToStorage($storage, $req,$maxAmount);
+            return redirect(route('storage.show',[ 'storage' => $storage]))->with('success', 'Item added');
         }
+        else
+        {
+            $existingItem = $storage->items->where('id', $req['item'])->first();
+            if ($existingItem)
+            {
+                $this->addExistingItemToStorage($storage, $req,$maxAmount, $existingItem);
+                return redirect(route('storage.show',[ 'storage' => $storage]))->with('success', 'Item added');
+            }
+            return redirect(route('storage.show',[ 'storage' => $storage]))->with('error', 'Unable to store two item types');
+        }
+    }
 
+    private function addItemToStorage(Storage $storage, array $req, Int $maxAmount)
+    {
+        if ($req['quantity'] < $maxAmount) {
+            $storage->items()->attach($req['item'], ['quantity' => $req['quantity']]);
+            return;
+        }
+        return redirect(route('storage.show',[ 'storage' => $storage]))->with('error', 'Capacity reached');
+    }
+
+    private function addExistingItemToStorage(Storage $storage, Array $req, Int $maxAmount, Item $existingItem)
+    {
+        if ($req['quantity'] < $maxAmount)
+        {
+            $existingQuantity = $existingItem->pivot->quantity;
+            $newQuantity = $existingQuantity + $req['quantity']; $storage->items()->syncWithoutDetaching([$req['item'] => ['quantity' => $newQuantity]]);
+            return;
+        }
+        return redirect(route('storage.show',[ 'storage' => $storage]))->with('error', 'Capacity reached');
     }
 
     public function remove(Storage $storage)
@@ -94,6 +106,23 @@ class StorageController extends Controller
         return redirect(route('warehouse.show', ['warehouse' => $warehouse->name]))->with('success', 'Storage bin created');
     }
 
+    public function settings(Storage $storage)
+    {
+        return view('storage.settings', [
+            'storage' => $storage
+        ]);
+    }
+    public function update(Storage $storage)
+    {
+        $storage->update(
+            request()->validate([
+                'capacity' => ['numeric', 'min:1'],
+                'replenish' => ['decimal:2', 'between:0,100']
+            ]));
+
+        return redirect(route('storage.settings', ['storage' => $storage]))->with('success', 'Storage Updated');
+    }
+
     public function item(Item $item)
     {
         $warehouses = new Collection();
@@ -103,7 +132,6 @@ class StorageController extends Controller
         {
             $storage->warehouse;
         }
-//        return $item;
 
         return view('storage.item', [
             'item' => $item,
@@ -111,6 +139,4 @@ class StorageController extends Controller
             'warehouses' => $warehouses
         ]);
     }
-
-
 }

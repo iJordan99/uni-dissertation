@@ -24,7 +24,7 @@ return new class () extends Migration {
             $table->integer('shelf')->default(0);
             $table->integer('reorder')->default(0);
             $table->decimal('cost')->default(0);
-            $table->decimal('selling_price')->default(0);
+            $table->decimal('price')->default(0);
             $table->timestamps();
         });
     }

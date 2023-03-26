@@ -33,5 +33,4 @@ class Storage extends Model
     {
         return $this->belongsToMany(Item::class)->withPivot('quantity')->withTimestamps();
     }
-
 }

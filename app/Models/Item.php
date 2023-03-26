@@ -25,7 +25,7 @@ class Item extends Model
         'shelf',
         'reorder',
         'cost',
-        'selling_price'
+        'price'
     ];
 
     public function scopeFilter($query){
@@ -34,7 +34,6 @@ class Item extends Model
                 ->where('name','like', '%'. request('search') . '%')
                 ->orWhere('sku','like','%'.request('search') .'%');
         }
-
     }
 
     public function storage()

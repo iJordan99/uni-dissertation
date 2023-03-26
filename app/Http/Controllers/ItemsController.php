@@ -41,7 +41,7 @@ class ItemsController extends Controller
                 'shelf' => ['required_if:perishable,true','numeric'],
                 'reorder' => ['required', 'numeric','min:0'],
                 'cost' => ['required', 'numeric','min:0'],
-                'selling_price' => ['required', 'numeric','min:0'],
+                'price' => ['required', 'numeric','min:0']
             ]));
 
         return redirect(route('items'))->with('success', 'Item created');
@@ -51,15 +51,15 @@ class ItemsController extends Controller
     {
         $item->update(
             request()->validate([
-                'weight' => ['numeric'],
-                'height' => ['numeric'],
-                'width' => ['numeric'],
-                'length' => ['numeric'],
+                'weight' => ['decimal:2'],
+                'height' => ['decimal:2'],
+                'width' => ['decimal:2'],
+                'length' => ['decimal:2'],
                 'shelf' => ['numeric'],
                 'reorder' => ['numeric'],
-                'cost' => ['numeric'],
-                'selling_price ' => ['numeric'],
+                'cost' => ['decimal:2'],
+                'price' => ['decimal:2']
             ]));
-        return redirect(route('items'))->with('success', 'Item Updated');
+        return redirect(route('item.settings', ['item' => $item]))->with('success', 'Item Updated');
     }
 }

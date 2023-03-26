@@ -1,6 +1,7 @@
 <x-layout>
     <x-header header="{{ ucwords($item->name) }}"
               href="{{ route('item.settings', ['item' => $item->name]) }}"
+              url=""
               subtext="Locations">
 
         <x-settings-icon></x-settings-icon>
@@ -49,7 +50,7 @@
                     $restocked ='';
                     $stocked ='';
                     $value = $quantity * $item->cost;
-                    $marketVal = $quantity * $item->selling_price;
+                    $marketVal = $quantity * $item->price;
                     if ($storage->pivot->created_at)
                     {
                         $shelfDate = date_add($storage->pivot->created_at,new DateInterval('P' . $item->shelf . 'D'))->format('d-m-y');
@@ -72,7 +73,7 @@
                         <a href="{{ route('storage.show', ['storage' => $sku]) }}"> {{ $sku }}</a>
                     </td>
                     <td class="px-6 py-4">
-                        {{ $quantity }}
+                        {{ $quantity }} / {{ $storage->capacity }}
                     </td>
                     <td class="px-6 py-4">
                         {{ $stocked }}
@@ -107,7 +108,7 @@
                 <td class="px-6 py-4"></td>
                 <td class="px-6 py-4"></td>
                 <td class="px-6 py-3">{{ $storages->pluck('pivot.quantity')->sum() * $item->cost}}</td>
-                <td class="px-6 py-3">{{ $storages->pluck('pivot.quantity')->sum() * $item->selling_price}}</td>
+                <td class="px-6 py-3">{{ $storages->pluck('pivot.quantity')->sum() * $item->price}}</td>
                 @if ($item->perishable == 1)
                     <td class="px-6 py-4"></td>
                 @endif

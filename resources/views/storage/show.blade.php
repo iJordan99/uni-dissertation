@@ -1,7 +1,10 @@
 <x-layout>
     <x-header header="{{ ucwords($storage->identifier) }}"
-              href="/settings/warehouse/storagebin/{{$storage->identifier}}"
-              subtext="{{ ucwords($warehouse->name) }}"/>
+              href="{{ route('storage.settings', ['storage' => $storage]) }}"
+              url=""
+              subtext="{{ ucwords($warehouse->name) }}">
+        <x-settings-icon></x-settings-icon>
+    </x-header>
 
     <section class="px-2 py-2 mt-6 flex flex-row">
         <h2 class="text-xl text-gray-500 font-bold py-2">Items</h2>
