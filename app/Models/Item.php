@@ -16,20 +16,23 @@ class Item extends Model
 
     protected $fillable =[
         'name',
-        'reference',
+        'sku',
         'weight',
         'height',
         'width',
         'length',
         'perishable',
-        'shelf'
+        'shelf',
+        'reorder',
+        'cost',
+        'selling_price'
     ];
 
     public function scopeFilter($query){
         if(request('search')){
             $query
                 ->where('name','like', '%'. request('search') . '%')
-                ->orWhere('reference','like','%'.request('search') .'%');
+                ->orWhere('sku','like','%'.request('search') .'%');
         }
 
     }

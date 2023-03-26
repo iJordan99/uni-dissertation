@@ -15,13 +15,16 @@ return new class () extends Migration {
         Schema::create('items', function (Blueprint $table) {
             $table->id();
             $table->string('name')->unique();
-            $table->string('reference')->unique();
+            $table->string('sku')->unique();
             $table->decimal('weight');
             $table->decimal('height');
             $table->decimal('width');
             $table->decimal('length');
             $table->boolean('perishable')->default(0);
             $table->integer('shelf')->default(0);
+            $table->integer('reorder')->default(0);
+            $table->decimal('cost')->default(0);
+            $table->decimal('selling_price')->default(0);
             $table->timestamps();
         });
     }

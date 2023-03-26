@@ -19,7 +19,7 @@ class ItemFactory extends Factory
     {
         return [
             'name' => fake()->unique()->name(),
-            'reference' => fake()->ean13(),
+            'sku' => fake()->ean13(),
             'weight' => fake()->numberBetween(0,250),
             'height' => fake()->numberBetween(0,250),
             'width' => fake()->numberBetween(0,250),

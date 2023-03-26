@@ -1,7 +1,8 @@
 <x-layout>
     <x-search-header title=" {{ ucwords($warehouse->name) }} Storages"
                      route="{{ route('warehouse.show', ['warehouse' => $warehouse]) }}"
-                     resource="Storages"/>
+                     resource="Storages">
+    </x-search-header>
 
     <section class="px-2 py-2 mt-6 flex flex-row">
         <h2 class="text-xl text-gray-500 font-bold py-2">Storage Bins</h2>
@@ -19,7 +20,7 @@
                 <x-storage :storage="$storage" :warehouse="$warehouse"/>
             @endforeach
         </div>
-{{--        {{ $storages->links() }}--}}
+        {{ $storages->links() }}
     </section>
 </x-layout>
 

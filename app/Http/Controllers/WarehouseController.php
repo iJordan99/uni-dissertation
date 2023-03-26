@@ -22,7 +22,7 @@ class WarehouseController extends Controller
             'storages' => Storage::where('warehouse_id', $warehouse->id)
                 ->filter()
                 ->latest()
-                ->paginate(30)
+                ->paginate(34)
                 ->withQueryString()
         ]);
     }

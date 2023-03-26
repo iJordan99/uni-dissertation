@@ -4,7 +4,7 @@
         <a href="{{ $href }}"
            class="text-blue-500 bg-transparent
                     h-8 text-center font-bold cursor-pointer text-2xl mt-3 ml-2">
-            <x-settings-icon></x-settings-icon>
+            {{ $slot }}
         </a>
     </div>
     <p class="text-gray-500">{{ $subtext }}</p>
