@@ -20,13 +20,13 @@
                     Storage
                 </th>
                 <th scope="col" class="px-6 py-3">
-                    Quantity
-                </th>
-                <th scope="col" class="px-6 py-3">
                     Stocked
                 </th>
                 <th scope="col" class="px-6 py-3">
                     restocked
+                </th>
+                <th scope="col" class="px-6 py-3">
+                    Quantity
                 </th>
                 <th scope="col" class="px-6 py-3">
                     Purchase value
@@ -73,13 +73,13 @@
                         <a href="{{ route('storage.show', ['storage' => $sku]) }}"> {{ $sku }}</a>
                     </td>
                     <td class="px-6 py-4">
-                        {{ $quantity }} / {{ $storage->capacity }}
-                    </td>
-                    <td class="px-6 py-4">
                         {{ $stocked }}
                     </td>
                     <td class="px-6 py-4">
                         {{ $restocked }}
+                    </td>
+                    <td class="px-6 py-4">
+                        {{ $quantity }} / {{ $storage->capacity }}
                     </td>
                     <td class="px-6 py-4">
                         {{ $value }}
@@ -104,9 +104,9 @@
             <tr class="font-semibold font-medium text-gray-900 bg-white">
                 <th scope="row" class="px-6 py-3">Total</th>
                 <td class="px-6 py-4"></td>
+                <td class="px-6 py-4"></td>
+                <td class="px-6 py-4"></td>
                 <td class="px-6 py-4">{{ $storages->pluck('pivot.quantity')->sum() }}</td>
-                <td class="px-6 py-4"></td>
-                <td class="px-6 py-4"></td>
                 <td class="px-6 py-3">{{ $storages->pluck('pivot.quantity')->sum() * $item->cost}}</td>
                 <td class="px-6 py-3">{{ $storages->pluck('pivot.quantity')->sum() * $item->price}}</td>
                 @if ($item->perishable == 1)
