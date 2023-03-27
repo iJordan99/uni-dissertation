@@ -20,7 +20,7 @@ class Storage extends Model
         if(request('search')){
             $query
                 ->where('identifier','like', '%'. request('search') . '%')
-                ->orwhereHas('items', fn ($q) => $q->where('name', 'like', '%' . request('search') . '%'));
+                ->orwhereHas('item', fn ($q) => $q->where('name', 'like', '%' . request('search') . '%'));
         }
     }
 
@@ -29,7 +29,7 @@ class Storage extends Model
         return $this->belongsTo(Warehouse::class);
     }
 
-    public function items()
+    public function item()
     {
         return $this->belongsToMany(Item::class)->withPivot('quantity')->withTimestamps();
     }

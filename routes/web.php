@@ -25,7 +25,8 @@ Route::post('locations/create', [WarehouseController::class, 'store'])->name('lo
 
 //storage
 Route::get('storage/{storage:identifier}', [StorageController::class, 'show'])->name('storage.show')->middleware('auth');
-Route::post('storage/{storage:identifier}', [StorageController::class, 'add'])->name('storage.item.add')->middleware('auth');
+Route::post('storage/add/{storage:identifier}', [StorageController::class, 'add'])->name('storage.item.add')->middleware('auth');
+Route::post('storage/remove/{storage:identifier}', [StorageController::class, 'remove'])->name('storage.item.remove')->middleware('auth');
 Route::get('{warehouse:name}/storage/create', [StorageController::class, 'create'])->name('storage.create');
 Route::post('{warehouse:name}/storage/create', [StorageController::class, 'store']);
 Route::get('settings/warehouse/storage/{storage:identifier}', [StorageController::class, 'settings'])->name('storage.settings')->middleware('auth');

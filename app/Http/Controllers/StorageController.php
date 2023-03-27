@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Item;
 use App\Models\Storage;
 use App\Models\Warehouse;
-use Exception;
 use Illuminate\Support\Collection;
 use Illuminate\View\View;
 
@@ -13,10 +12,11 @@ class StorageController extends Controller
 {
     public function show(Storage $storage)
     {
+        $items = $storage->item->count() == 1 ? collect($storage->item) : Item::all();
         return view('storage.show',[
-            'storage' => $storage->load('items'),
+            'storage' => $storage,
             'warehouse' => Warehouse::find($storage->warehouse_id),
-            'items' => Item::all()
+            'items' => $items
         ]);
     }
 
@@ -27,19 +27,19 @@ class StorageController extends Controller
             'quantity' => ['required', 'min:1']
         ]);
 
-        $maxAmount = $storage->capacity - $storage->items->pluck('pivot.quantity')->sum();
+        $maxAmount = $storage->capacity - $storage->item->pluck('pivot.quantity')->sum();
 
-        if (!$storage->items->count() > 0)
+        if (!$storage->item->count() > 0)
         {
             $this->addItemToStorage($storage, $req,$maxAmount);
             return redirect(route('storage.show',[ 'storage' => $storage]))->with('success', 'Item added');
         }
         else
         {
-            $existingItem = $storage->items->where('id', $req['item'])->first();
+            $existingItem = $storage->item->where('id', $req['item'])->first();
             if ($existingItem)
             {
-                $this->addExistingItemToStorage($storage, $req,$maxAmount, $existingItem);
+                $this->updateExistingItemInStorage($storage, $req,$maxAmount, $existingItem);
                 return redirect(route('storage.show',[ 'storage' => $storage]))->with('success', 'Item added');
             }
             return redirect(route('storage.show',[ 'storage' => $storage]))->with('error', 'Unable to store two item types');
@@ -49,18 +49,18 @@ class StorageController extends Controller
     private function addItemToStorage(Storage $storage, array $req, Int $maxAmount)
     {
         if ($req['quantity'] < $maxAmount) {
-            $storage->items()->attach($req['item'], ['quantity' => $req['quantity']]);
+            $storage->item()->attach($req['item'], ['quantity' => $req['quantity']]);
             return;
         }
         return redirect(route('storage.show',[ 'storage' => $storage]))->with('error', 'Capacity reached');
     }
 
-    private function addExistingItemToStorage(Storage $storage, Array $req, Int $maxAmount, Item $existingItem)
+    private function updateExistingItemInStorage(Storage $storage, Array $req, Int $maxAmount, Item $existingItem)
     {
         if ($req['quantity'] < $maxAmount)
         {
             $existingQuantity = $existingItem->pivot->quantity;
-            $newQuantity = $existingQuantity + $req['quantity']; $storage->items()->syncWithoutDetaching([$req['item'] => ['quantity' => $newQuantity]]);
+            $newQuantity = $existingQuantity + $req['quantity']; $storage->item()->syncWithoutDetaching([$req['item'] => ['quantity' => $newQuantity]]);
             return;
         }
         return redirect(route('storage.show',[ 'storage' => $storage]))->with('error', 'Capacity reached');
@@ -73,7 +73,7 @@ class StorageController extends Controller
             'quantity' => ['required', 'min:1']
         ]);
 
-        $existingItem = $storage->items->where('id', $req['item'])->first();
+        $existingItem = $storage->item->where('id', $req['item'])->first();
 
         if (!$existingItem)
         {
@@ -81,7 +81,14 @@ class StorageController extends Controller
         }
 
         $existingQuantity = $existingItem->pivot->quantity;
-        $newQuantity = $existingQuantity - $req['quantity']; $storage->items()->syncWithoutDetaching([$req['item'] => ['quantity' => $newQuantity]]);
+        $newQuantity = $existingQuantity - $req['quantity'];
+
+        if ($newQuantity <= 0) {
+            $storage->item()->detach($req['item']);
+            return redirect(route('storage.show',[ 'storage' => $storage]))->with('success', 'Item Removed');
+        } else {
+            $storage->item()->syncWithoutDetaching([$req['item'] => ['quantity' => $newQuantity]]);
+        }
         return redirect(route('storage.show',[ 'storage' => $storage]))->with('success', 'Item updated');
     }
 
@@ -125,8 +132,6 @@ class StorageController extends Controller
 
     public function item(Item $item)
     {
-        $warehouses = new Collection();
-
         $storages = $item->storage;
         foreach ($storages as $storage)
         {
@@ -136,7 +141,6 @@ class StorageController extends Controller
         return view('storage.item', [
             'item' => $item,
             'storages' => $storages,
-            'warehouses' => $warehouses
         ]);
     }
 }
