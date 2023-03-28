@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class Item extends Model
 {
@@ -13,6 +14,29 @@ class Item extends Model
     protected $attributes = [
         'perishable' => 0
     ];
+
+    protected static function boot()
+    {
+        parent::boot();
+        static::created( function ($model) {
+            $user = Auth::user();
+            $alert = new Alert([
+                'type' => 'created_item',
+                'item_id' => $model->id
+            ]);
+            $user->alerts()->save($alert);
+        });
+
+        static::updated(function ($model) {
+            $user = Auth::user();
+            $alert = new Alert([
+                'type' => 'updated_item',
+                'item_id' => $model->id
+            ]);
+            $user->alerts()->save($alert);
+        });
+
+    }
 
     protected $fillable =[
         'name',

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class Storage extends Model
 {
@@ -15,6 +16,28 @@ class Storage extends Model
         'capacity',
         'replenish'
     ];
+
+    protected static function boot()
+    {
+        parent::boot();
+        static::created(function ($model) {
+            $user = Auth::user();
+            $alert = new Alert([
+                'type' => 'created_storage',
+                'storage_id' => $model->id
+            ]);
+            $user->alerts()->save($alert);
+        });
+
+        static::updated(function ($model) {
+            $user = Auth::user();
+            $alert = new Alert([
+                'type' => 'updated_storage',
+                'storage_id' => $model->id
+            ]);
+            $user->alerts()->save($alert);
+        });
+    }
 
     public function scopeFilter($query){
         if(request('search')){

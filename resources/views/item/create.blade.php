@@ -13,11 +13,9 @@
 
             </div>
         </div>
-        <x-form.input name="reorder" type="number" placeholder="Reorder amount"/>
-        <x-form.input name="cost" type="number" placeholder="Item cost"/>
-        <x-form.input name="{{ str_replace('_',' ', 'selling_price')}}" type="number" placeholder="Item price"/>
-
-
+        <x-form.input name="reorder" placeholder="Reorder amount"/>
+        <x-form.input name="cost" placeholder="Item cost"/>
+        <x-form.input name="price"  placeholder="Item price"/>
         <x-form.button>Create</x-form.button>
     </x-form.layout>
 </x-layout>

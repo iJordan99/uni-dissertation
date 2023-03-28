@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AlertsController;
 use App\Http\Controllers\ItemsController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\StorageController;
@@ -39,3 +40,7 @@ Route::get('items/create', [ItemsController::class, 'create'])->name('item.creat
 Route::post('items/create', [ItemsController::class, 'store'])->name('item.create')->middleware('auth');
 Route::get('settings/item/{item:name}', [ItemsController::class, 'settings'])->name('item.settings')->middleware('auth');
 Route::post('settings/item/{item:name}', [ItemsController::class, 'update'])->name('item.update')->middleware('auth');
+
+//alerts
+Route::get('alerts', [AlertsController::class, 'index'])->name('alerts')->middleware('auth');
+Route::post('alerts/{alert:id}', [AlertsController::class, 'remove'])->name('alert.remove')->middleware('auth');
