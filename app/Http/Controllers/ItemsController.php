@@ -60,6 +60,8 @@ class ItemsController extends Controller
                 'cost' => ['decimal:2'],
                 'price' => ['decimal:2']
             ]));
+
+
         return redirect(route('item.settings', ['item' => $item]))->with('success', 'Item Updated');
     }
 }
