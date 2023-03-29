@@ -90,14 +90,13 @@
                     @if ($item->perishable == 1)
                         @php
                             $shelfDate = Carbon\Carbon::parse($storage->pivot->created_at)->addDays($item->shelf);
-                            $expiryClass = $shelfDate->isPast() ? 'bg-red-200 text-red-700' : ($shelfDate->diffInDays() <= 7 ? 'bg-orange-200 text-orange-700' : 'bg-green-200 text-green-700');
+                            $expiryClass = $shelfDate->isPast() ? 'bg-red-200 text-red-700' : ($shelfDate->diffInDays() <= 0 ? 'bg-orange-200 text-orange-700' : 'bg-green-200 text-green-700');
                         @endphp
                         <td class="{{ $expiryClass }} px-2">
                             {{ $shelfDate->format('d-m-Y') }}
                         </td>
                     @endif
                 </tr>
-
             @endforeach
             </tbody>
             <tfoot>
