@@ -89,6 +89,9 @@ class Alert extends Model
             case 'reorder_item':
                 return 'Item reached reorder amount';
                 break;
+            case 'storage_reorder_item':
+                return 'Storage reached replenish amount';
+                break;
         }
     }
 }

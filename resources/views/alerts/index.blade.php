@@ -18,7 +18,7 @@
                     {
                         $class = 'bg-blue-100 border-t-4 border-blue-500 rounded-b text-blue-900 px-4 py-3 shadow-md m-4';
                     }
-                    elseif($alert->type == 'reorder_item')
+                    elseif($alert->type == 'reorder_item' || $alert->type == 'storage_reorder_item')
                     {
                         $class = 'bg-purple-100 border-t-4 border-purple-500 rounded-b text-purple-900 px-4 py-3 shadow-md m-4';
                     }

@@ -51,7 +51,6 @@ class StorageController extends Controller
             if ($existingItem)
             {
                 $this->updateExistingItemInStorage($storage, $req,$maxAmount, $existingItem);
-
                 $user = Auth::user();
                 $alert = new Alert([
                     'type' => 'increased_storage_item_quantity',
@@ -68,7 +67,7 @@ class StorageController extends Controller
 
     private function addItemToStorage(Storage $storage, array $req, Int $maxAmount)
     {
-        if ($req['quantity'] < $maxAmount) {
+        if ($req['quantity'] <= $maxAmount) {
             $storage->item()->attach($req['item'], ['quantity' => $req['quantity']]);
             $user = Auth::user();
             $alert = new Alert([
@@ -89,24 +88,41 @@ class StorageController extends Controller
     {
         $item = Item::find($id);
         $total = $item->storage->pluck('pivot.quantity')->sum();
+
+        $user = Auth::user();
         if($total <= $item->reorder)
         {
-            $user = Auth::user();
             $alert = new Alert([
                 'type' => 'reorder_item',
                 'item_id' => $item->id
             ]);
             $user->alerts()->save($alert);
         }
+
+        foreach($item->storage as $storage)
+        {
+            $total = $storage->pivot->quantity;
+            $storageReorder = $storage->pluck('capacity')->sum() * $storage->pluck('replenish')->sum() /100;
+            if($total < $storageReorder)
+            {
+                $alert = new Alert([
+                    'type' => 'storage_reorder_item',
+                    'item_id' => $item->id,
+                    'storage_id' => $storage->id
+                ]);
+                $user->alerts()->save($alert);
+            }
+        }
     }
 
     private function updateExistingItemInStorage(Storage $storage, Array $req, Int $maxAmount, Item $existingItem)
     {
-        if ($req['quantity'] < $maxAmount)
+        if ($req['quantity'] <= $maxAmount)
         {
             $existingQuantity = $existingItem->pivot->quantity;
             $newQuantity = $existingQuantity + $req['quantity']; $storage->item()->syncWithoutDetaching([$req['item'] => ['quantity' => $newQuantity]]);
             $this->needsReorder($req['item']);
+            return;
         }
         return redirect(route('storage.show',[ 'storage' => $storage]))->with('error', 'Capacity reached');
     }
