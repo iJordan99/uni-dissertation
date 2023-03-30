@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Alert;
 use App\Models\Storage;
 use App\Models\Warehouse;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
 class WarehouseController extends Controller
@@ -22,7 +24,7 @@ class WarehouseController extends Controller
             'storages' => Storage::where('warehouse_id', $warehouse->id)
                 ->filter()
                 ->latest()
-                ->paginate(30)
+                ->paginate(34)
                 ->withQueryString()
         ]);
     }
@@ -37,6 +39,7 @@ class WarehouseController extends Controller
                 'postcode' => ['required', 'max:255', 'min:6'],
                 'country' => ['required','max:255'],
             ]));
+
 
         return redirect(route('home'))->with('success', 'Warehouse created');
     }

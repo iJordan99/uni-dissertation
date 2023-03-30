@@ -1,7 +1,7 @@
 <x-layout>
     <x-form.layout title="Create Item" action="{{ route('item.create') }}">
         <x-form.input name="name" placeholder="Item name" required></x-form.input>
-        <x-form.input name="reference" placeholder="Item reference" required></x-form.input>
+        <x-form.input name="sku" placeholder="Item sku" required></x-form.input>
         <x-form.input name="weight" type="number" placeholder="Weight (Kg)" required></x-form.input>
         <x-form.input name="height" type="number" placeholder="Height (Cm)" required></x-form.input>
         <x-form.input name="width" type="number" placeholder="Width (Cm)" required></x-form.input>
@@ -13,8 +13,9 @@
 
             </div>
         </div>
-
-
+        <x-form.input name="reorder" placeholder="Reorder amount"/>
+        <x-form.input name="cost" placeholder="Item cost"/>
+        <x-form.input name="price"  placeholder="Item price"/>
         <x-form.button>Create</x-form.button>
     </x-form.layout>
 </x-layout>

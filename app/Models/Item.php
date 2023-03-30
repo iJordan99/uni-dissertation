@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class Item extends Model
 {
@@ -14,24 +15,49 @@ class Item extends Model
         'perishable' => 0
     ];
 
+    protected static function boot()
+    {
+        parent::boot();
+        static::created( function ($model) {
+            $user = Auth::user();
+            $alert = new Alert([
+                'type' => 'created_item',
+                'item_id' => $model->id
+            ]);
+            $user->alerts()->save($alert);
+        });
+
+        static::updated(function ($model) {
+            $user = Auth::user();
+            $alert = new Alert([
+                'type' => 'updated_item',
+                'item_id' => $model->id
+            ]);
+            $user->alerts()->save($alert);
+        });
+
+    }
+
     protected $fillable =[
         'name',
-        'reference',
+        'sku',
         'weight',
         'height',
         'width',
         'length',
         'perishable',
-        'shelf'
+        'shelf',
+        'reorder',
+        'cost',
+        'price'
     ];
 
     public function scopeFilter($query){
         if(request('search')){
             $query
                 ->where('name','like', '%'. request('search') . '%')
-                ->orWhere('reference','like','%'.request('search') .'%');
+                ->orWhere('sku','like','%'.request('search') .'%');
         }
-
     }
 
     public function storage()

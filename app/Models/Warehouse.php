@@ -3,6 +3,7 @@
 namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
 
@@ -12,7 +13,6 @@ class Warehouse extends Model
 
     public mixed $items;
     protected $fillable = [
-        'uuid',
         'name',
         'street',
         'city',
@@ -25,9 +25,16 @@ class Warehouse extends Model
     protected static function boot()
     {
         parent::boot();
-        static::creating( function ($model) {
-            $model->uuid = uuid_create();
+
+        static::created( function ($model) {
+            $user = Auth::user();
+            $alert = new Alert([
+                'type' => 'created_warehouse',
+                'warehouse_id' => $model->id
+            ]);
+            $user->alerts()->save($alert);
         });
+
     }
 
     public function scopeFilter($query){

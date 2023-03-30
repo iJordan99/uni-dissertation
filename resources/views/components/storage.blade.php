@@ -1,19 +1,19 @@
 @props(['storage', 'warehouse'])
 
 @php
-    $quantity = $storage->items->pluck('pivot.quantity')->sum();
+    $quantity = $storage->item->pluck('pivot.quantity')->sum();
     $safety = $storage->capacity * $storage->replenish/100;
     $class = ($quantity < $safety) ? "bg-red-200 text-red-700 hover:bg-red-300" : "bg-green-200 text-green-700 hover:bg-green-300";
 @endphp
 
-@if(!$storage->items->isEmpty())
+@if(!$storage->item->isEmpty())
     <a href="{{ route('storage.show', ['storage' => $storage]) }}">
         <div class="group relative bg-transparent cursor-pointer rounded-lg {{ $class }}">
             <div class="relative px-4 py-2 ">
                 <p class="font-semibold">
                     {{ ucwords($storage->identifier) }}
                 </p>
-                <p>{{ $storage->items->pluck('pivot.quantity')->sum() }}
+                <p>{{ $storage->item->pluck('pivot.quantity')->sum() }}
                     / {{ ucwords($storage->capacity) }}</p>
             </div>
         </div>

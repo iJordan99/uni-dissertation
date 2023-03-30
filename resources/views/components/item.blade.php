@@ -18,7 +18,7 @@
     <div class="flex justify-between text-m text-gray-500">
         <h3>
             <span class="absolute inset-0"></span>
-            {{ $item->reference }}
+            {{ $item->sku }}
         </h3>
     </div>
 </div>
