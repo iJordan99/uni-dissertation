@@ -19,7 +19,7 @@
                 <x-storage :storage="$storage" :warehouse="$warehouse"/>
             @endforeach
         </div>
-        {{ $storages->links() }}
+{{--        {{ $storages->links() }}--}}
     </section>
 </x-layout>
 
