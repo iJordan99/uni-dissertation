@@ -18,7 +18,6 @@ class WarehouseFactory extends Factory
     public function definition()
     {
         return [
-            'uuid' => fake()->uuid(),
             'name' => fake()->unique()->colorName(),
             'street' => fake()->streetName(),
             'city' => fake()->city(),

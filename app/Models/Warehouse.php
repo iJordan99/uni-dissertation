@@ -13,7 +13,6 @@ class Warehouse extends Model
 
     public mixed $items;
     protected $fillable = [
-        'uuid',
         'name',
         'street',
         'city',
