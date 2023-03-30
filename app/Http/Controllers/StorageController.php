@@ -2,56 +2,129 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Alert;
 use App\Models\Item;
 use App\Models\Storage;
 use App\Models\Warehouse;
-use Exception;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
 class StorageController extends Controller
 {
     public function show(Storage $storage)
     {
+        if ($storage->item->count() == 1) {
+            $items = collect($storage->item);
+            $storageHasItem = true;
+        } else {
+            $items = Item::all();
+            $storageHasItem = false;
+        }
+
         return view('storage.show',[
-            'storage' => $storage->load('items'),
+            'storage' => $storage,
             'warehouse' => Warehouse::find($storage->warehouse_id),
-            'items' => Item::all()
+            'items' => $items,
+            'storageHasItem' => $storageHasItem
         ]);
     }
 
     public function add(Storage $storage)
     {
-
-        $maxAmount = $storage->capacity - $storage->items->pluck('pivot.quantity')->sum();
-
         $req = request()->validate([
             'item' => ['required'],
             'quantity' => ['required', 'min:1']
         ]);
 
-        try {
-            if ($req['quantity'] < $maxAmount)
-            {
-                $existingItem = $storage->items->where('id', $req['item'])->first();
+        $maxAmount = $storage->capacity - $storage->item->pluck('pivot.quantity')->sum();
 
-                if (!$existingItem)
-                {
-                    $storage->items()->attach($req['item'],['quantity' => $req['quantity']]);
-                    return redirect(route('storage.show',[ 'storage' => $storage]))->with('success', 'Item added');
-                }
-
-                $existingQuantity = $existingItem->pivot->quantity;
-                $newQuantity = $existingQuantity + $req['quantity']; $storage->items()->syncWithoutDetaching([$req['item'] => ['quantity' => $newQuantity]]);
-                return redirect(route('storage.show',[ 'storage' => $storage]))->with('success', 'Item updated');
-
-            }
-            return redirect(route('storage.show',[ 'storage' => $storage]))->with('error', 'Capacity reached');
-        } catch (Exception)
+        if ($storage->item->isEmpty())
         {
-            return redirect(route('storage.show',[ 'storage' => $storage]))->with('error', 'Something went wrong');
+            $this->addItemToStorage($storage, $req,$maxAmount);
+
+            return redirect(route('storage.show',[ 'storage' => $storage]))->with('success', 'Item added');
+        }
+        else
+        {
+            $existingItem = $storage->item->where('id', $req['item'])->first();
+            if ($existingItem)
+            {
+                $this->updateExistingItemInStorage($storage, $req,$maxAmount, $existingItem);
+                $user = Auth::user();
+                $alert = new Alert([
+                    'type' => 'increased_storage_item_quantity',
+                    'storage_id' => $storage->id,
+                    'item_id' => $req['item']
+                ]);
+                $user->alerts()->save($alert);
+
+                return redirect(route('storage.show',[ 'storage' => $storage]))->with('success', 'Item added');
+            }
+            return redirect(route('storage.show',[ 'storage' => $storage]))->with('error', 'Unable to store two item types');
+        }
+    }
+
+    private function addItemToStorage(Storage $storage, array $req, Int $maxAmount)
+    {
+        if ($req['quantity'] <= $maxAmount) {
+            $storage->item()->attach($req['item'], ['quantity' => $req['quantity']]);
+            $user = Auth::user();
+            $alert = new Alert([
+                'type' => 'added_storage_item',
+                'storage_id' => $storage->id,
+                'item_id' => $req['item']
+            ]);
+            $user->alerts()->save($alert);
+
+            $this->needsReorder($req['item']);
+            return;
         }
 
+        return redirect(route('storage.show',[ 'storage' => $storage]))->with('error', 'Capacity reached');
+    }
+
+    public function needsReorder(Int $id)
+    {
+        $item = Item::find($id);
+        $total = $item->storage->pluck('pivot.quantity')->sum();
+
+        $user = Auth::user();
+        if($total <= $item->reorder)
+        {
+            $alert = new Alert([
+                'type' => 'reorder_item',
+                'item_id' => $item->id
+            ]);
+            $user->alerts()->save($alert);
+        }
+
+        foreach($item->storage as $storage)
+        {
+            $total = $storage->pivot->quantity;
+            $storageReorder = $storage->pluck('capacity')->sum() * $storage->pluck('replenish')->sum() /100;
+            if($total < $storageReorder)
+            {
+                $alert = new Alert([
+                    'type' => 'storage_reorder_item',
+                    'item_id' => $item->id,
+                    'storage_id' => $storage->id
+                ]);
+                $user->alerts()->save($alert);
+            }
+        }
+    }
+
+    private function updateExistingItemInStorage(Storage $storage, Array $req, Int $maxAmount, Item $existingItem)
+    {
+        if ($req['quantity'] <= $maxAmount)
+        {
+            $existingQuantity = $existingItem->pivot->quantity;
+            $newQuantity = $existingQuantity + $req['quantity']; $storage->item()->syncWithoutDetaching([$req['item'] => ['quantity' => $newQuantity]]);
+            $this->needsReorder($req['item']);
+            return;
+        }
+        return redirect(route('storage.show',[ 'storage' => $storage]))->with('error', 'Capacity reached');
     }
 
     public function remove(Storage $storage)
@@ -61,7 +134,7 @@ class StorageController extends Controller
             'quantity' => ['required', 'min:1']
         ]);
 
-        $existingItem = $storage->items->where('id', $req['item'])->first();
+        $existingItem = $storage->item->where('id', $req['item'])->first();
 
         if (!$existingItem)
         {
@@ -69,7 +142,23 @@ class StorageController extends Controller
         }
 
         $existingQuantity = $existingItem->pivot->quantity;
-        $newQuantity = $existingQuantity - $req['quantity']; $storage->items()->syncWithoutDetaching([$req['item'] => ['quantity' => $newQuantity]]);
+        $newQuantity = $existingQuantity - $req['quantity'];
+
+        if ($newQuantity <= 0) {
+            $storage->item()->detach($req['item']);
+            $this->needsReorder($req['item']);
+            return redirect(route('storage.show',[ 'storage' => $storage]))->with('success', 'Item Removed');
+        } else {
+            $storage->item()->syncWithoutDetaching([$req['item'] => ['quantity' => $newQuantity]]);
+            $user = Auth::user();
+            $alert = new Alert([
+                'type' => 'reduced_storage_item_quantity',
+                'storage_id' => $storage->id,
+                'item_id' => $req['item']
+            ]);
+            $user->alerts()->save($alert);
+            $this->needsReorder($req['item']);
+        }
         return redirect(route('storage.show',[ 'storage' => $storage]))->with('success', 'Item updated');
     }
 
@@ -94,23 +183,35 @@ class StorageController extends Controller
         return redirect(route('warehouse.show', ['warehouse' => $warehouse->name]))->with('success', 'Storage bin created');
     }
 
+    public function settings(Storage $storage)
+    {
+        return view('storage.settings', [
+            'storage' => $storage
+        ]);
+    }
+    public function update(Storage $storage)
+    {
+        $storage->update(
+            request()->validate([
+                'capacity' => ['numeric', 'min:1'],
+                'replenish' => ['decimal:2', 'between:0,100']
+            ]));
+
+        return redirect(route('storage.settings', ['storage' => $storage]))->with('success', 'Storage Updated');
+    }
+
     public function item(Item $item)
     {
-        $warehouses = new Collection();
-
         $storages = $item->storage;
         foreach ($storages as $storage)
         {
             $storage->warehouse;
         }
-//        return $item;
 
         return view('storage.item', [
             'item' => $item,
             'storages' => $storages,
-            'warehouses' => $warehouses
         ]);
     }
-
 
 }

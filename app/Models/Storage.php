@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class Storage extends Model
 {
@@ -16,11 +17,33 @@ class Storage extends Model
         'replenish'
     ];
 
+    protected static function boot()
+    {
+        parent::boot();
+        static::created(function ($model) {
+            $user = Auth::user();
+            $alert = new Alert([
+                'type' => 'created_storage',
+                'storage_id' => $model->id
+            ]);
+            $user->alerts()->save($alert);
+        });
+
+        static::updated(function ($model) {
+            $user = Auth::user();
+            $alert = new Alert([
+                'type' => 'updated_storage',
+                'storage_id' => $model->id
+            ]);
+            $user->alerts()->save($alert);
+        });
+    }
+
     public function scopeFilter($query){
         if(request('search')){
             $query
                 ->where('identifier','like', '%'. request('search') . '%')
-                ->orwhereHas('items', fn ($q) => $q->where('name', 'like', '%' . request('search') . '%'));
+                ->orwhereHas('item', fn ($q) => $q->where('name', 'like', '%' . request('search') . '%'));
         }
     }
 
@@ -29,9 +52,8 @@ class Storage extends Model
         return $this->belongsTo(Warehouse::class);
     }
 
-    public function items()
+    public function item()
     {
         return $this->belongsToMany(Item::class)->withPivot('quantity')->withTimestamps();
     }
-
 }

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AlertsController;
 use App\Http\Controllers\ItemsController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\StorageController;
@@ -25,13 +26,21 @@ Route::post('locations/create', [WarehouseController::class, 'store'])->name('lo
 
 //storage
 Route::get('storage/{storage:identifier}', [StorageController::class, 'show'])->name('storage.show')->middleware('auth');
-Route::post('storage/{storage:identifier}', [StorageController::class, 'add'])->name('storage.item.add')->middleware('auth');
+Route::post('storage/add/{storage:identifier}', [StorageController::class, 'add'])->name('storage.item.add')->middleware('auth');
+Route::post('storage/remove/{storage:identifier}', [StorageController::class, 'remove'])->name('storage.item.remove')->middleware('auth');
 Route::get('{warehouse:name}/storage/create', [StorageController::class, 'create'])->name('storage.create');
 Route::post('{warehouse:name}/storage/create', [StorageController::class, 'store']);
-
-Route::get('item/{item:name}', [StorageController::class, 'item'])->name('item.locations')->middleware('auth');
+Route::get('settings/warehouse/storage/{storage:identifier}', [StorageController::class, 'settings'])->name('storage.settings')->middleware('auth');
+Route::post('settings/warehouse/storage/{storage:identifier}', [StorageController::class, 'update'])->name('storage.update')->middleware('auth');
 
 //items
+Route::get('item/{item:name}', [StorageController::class, 'item'])->name('item.locations')->middleware('auth');
 Route::get('items', [ItemsController::class, 'index'])->name('items')->middleware('auth');
 Route::get('items/create', [ItemsController::class, 'create'])->name('item.create')->middleware('auth');
 Route::post('items/create', [ItemsController::class, 'store'])->name('item.create')->middleware('auth');
+Route::get('settings/item/{item:name}', [ItemsController::class, 'settings'])->name('item.settings')->middleware('auth');
+Route::post('settings/item/{item:name}', [ItemsController::class, 'update'])->name('item.update')->middleware('auth');
+
+//alerts
+Route::get('alerts', [AlertsController::class, 'index'])->name('alerts')->middleware('auth');
+Route::post('alerts/{alert:id}', [AlertsController::class, 'remove'])->name('alert.remove')->middleware('auth');
