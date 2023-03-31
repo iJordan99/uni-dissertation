@@ -2,14 +2,14 @@
     <x-header header="{{ ucwords($item->name) }}"
               href="{{ route('item.settings', ['item' => $item->name]) }}"
               url=""
-              subtext="Locations">
+              subtext="{{ $item->sku }}">
 
         <x-settings-icon></x-settings-icon>
 
     </x-header>
 
 {{--    https://flowbite.com/docs/components/tables/--}}
-    <div class="relative overflow-x-auto shadow-md sm:rounded-lg mt-4">
+    <div class="relative overflow-x-auto shadow-md sm:rounded-lg mt-4 overflow-x-auto">
         <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
             <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
@@ -66,7 +66,7 @@
 
                 @endphp
                 <tr class="{{ $quantityClass }} cursor-pointer">
-                    <th scope="row" class="px-6 py-4 font-medium whitespace-nowrap hover:underline">
+                    <th scope="row" class="px-6 py-4 font-medium whitespace-normal hover:underline">
                         <a href="{{ route('warehouse.show', ['warehouse' => $warehouse]) }}">{{ $warehouse }}</a>
                     </th>
                     <td class="px-6 py-4 hover:underline">

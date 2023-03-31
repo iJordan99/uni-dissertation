@@ -1,6 +1,6 @@
 @include('partials.head')
-<main class="flex w-full h-screen justify-center items-center">
-    <div class="w-1/3">
+<main class="flex flex-col sm:flex-row h-screen items-center justify-center md:p-36 lg:p-0">
+    <div class="w-full md:w-full lg:w-1/2 xl:w-1/3">
         <x-form.layout title="Login" action="{{ route('login') }}">
             <x-form.input name="email" type="email" required></x-form.input>
             <x-form.input name="password" type="password" required></x-form.input>
