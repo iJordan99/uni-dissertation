@@ -43,7 +43,8 @@ class Storage extends Model
         if(request('search')){
             $query
                 ->where('identifier','like', '%'. request('search') . '%')
-                ->orwhereHas('item', fn ($q) => $q->where('name', 'like', '%' . request('search') . '%'));
+                ->orwhereHas('item', fn ($q) => $q->where('name', 'like', '%' . request('search') . '%'))
+                ->orwhereHas('item', fn ($q) => $q->where('sku', 'like', '%' . request('search') . '%'));
         }
     }
 
