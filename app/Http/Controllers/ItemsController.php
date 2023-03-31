@@ -31,7 +31,7 @@ class ItemsController extends Controller
 
         Item::create(
             request()->validate([
-                'name' => ['required', 'max:255', 'min:3', 'unique:items,name'],
+                'name' => ['required', 'max:255', 'min:3'],
                 'sku' => ['required', 'unique:items,sku'],
                 'weight' => ['required'],
                 'height' => ['required'],

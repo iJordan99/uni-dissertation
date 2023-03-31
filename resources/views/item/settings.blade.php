@@ -1,6 +1,6 @@
 <x-layout>
     <x-header header="{{ ucwords($item->name) }}"
-              subtext=""
+              subtext=" {{ $item->sku }}"
               url="{{ route('item.locations', ['item' => $item]) }}"
               href=""/>
 

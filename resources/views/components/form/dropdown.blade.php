@@ -8,7 +8,7 @@
         <option selected></option>
 
         @foreach($options as $option)
-            <option value="{{$option->id}}">{{$option->name}}</option>
+            <option value="{{$option->id}}">{{$option->name . ' : ' . $option->sku}}</option>
         @endforeach
     </select>
 

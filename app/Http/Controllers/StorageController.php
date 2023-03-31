@@ -77,14 +77,14 @@ class StorageController extends Controller
             ]);
             $user->alerts()->save($alert);
 
-            $this->needsReorder($req['item']);
+            $this->needsReorder($req['item'], $storage);
             return;
         }
 
         return redirect(route('storage.show',[ 'storage' => $storage]))->with('error', 'Capacity reached');
     }
 
-    public function needsReorder(Int $id)
+    public function needsReorder(Int $id, Storage $storage)
     {
         $item = Item::find($id);
         $total = $item->storage->pluck('pivot.quantity')->sum();
@@ -99,19 +99,15 @@ class StorageController extends Controller
             $user->alerts()->save($alert);
         }
 
-        foreach($item->storage as $storage)
+        $storageReorder = $storage->capacity * $storage->replenish / 100;
+        if($storage->item->pluck('pivot.quantity')->sum() < $storageReorder)
         {
-            $total = $storage->pivot->quantity;
-            $storageReorder = $storage->pluck('capacity')->sum() * $storage->pluck('replenish')->sum() /100;
-            if($total < $storageReorder)
-            {
-                $alert = new Alert([
+            $alert = new Alert([
                     'type' => 'storage_reorder_item',
                     'item_id' => $item->id,
                     'storage_id' => $storage->id
                 ]);
                 $user->alerts()->save($alert);
-            }
         }
     }
 
@@ -121,7 +117,7 @@ class StorageController extends Controller
         {
             $existingQuantity = $existingItem->pivot->quantity;
             $newQuantity = $existingQuantity + $req['quantity']; $storage->item()->syncWithoutDetaching([$req['item'] => ['quantity' => $newQuantity]]);
-            $this->needsReorder($req['item']);
+            $this->needsReorder($req['item'],$storage);
             return;
         }
         return redirect(route('storage.show',[ 'storage' => $storage]))->with('error', 'Capacity reached');
@@ -146,7 +142,7 @@ class StorageController extends Controller
 
         if ($newQuantity <= 0) {
             $storage->item()->detach($req['item']);
-            $this->needsReorder($req['item']);
+            $this->needsReorder($req['item'],$storage);
             return redirect(route('storage.show',[ 'storage' => $storage]))->with('success', 'Item Removed');
         } else {
             $storage->item()->syncWithoutDetaching([$req['item'] => ['quantity' => $newQuantity]]);
@@ -157,7 +153,7 @@ class StorageController extends Controller
                 'item_id' => $req['item']
             ]);
             $user->alerts()->save($alert);
-            $this->needsReorder($req['item']);
+            $this->needsReorder($req['item'],$storage);
         }
         return redirect(route('storage.show',[ 'storage' => $storage]))->with('success', 'Item updated');
     }

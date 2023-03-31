@@ -8,12 +8,12 @@
 
     <section class="mt-6">
         @if($storageHasItem)
-        <div class="lg:grid lg:grid-cols-4 rounded-lg gap-x-4 gap-y-10">
+        <div class="lg:grid lg:grid-cols-3 xl:grid-cols-4 rounded-lg">
             @foreach ($items as $item)
                 <x-item :item="$item" :storage="$storage"></x-item>
             @endforeach
         </div>
-        <div class="flex flex-row gap-x-3 w-1/4">
+        <div class="flex flex-row lg:w-1/3 xl:w-1/4">
             <x-form.storage-remove-item-header>
                 <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
                         @click="removeItemModel = true">-</button>

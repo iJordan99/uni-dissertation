@@ -1,5 +1,5 @@
 <x-layout>
-    <x-search-header title="Alerts" route="{{ route('location.create') }}" resource="Alerts"/>
+    <x-header header="Alerts" url="" href="" resource="Alerts" subtext=""/>
     <section class="mt-6">
         <div class="bg-white rounded-lg p-4 mt-4 max-h-screen overflow-y-scroll">
             @foreach($alerts as $alert)
