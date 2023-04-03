@@ -10,6 +10,7 @@ This is a web-based stock management application written in Laravel. The app all
 - User authentication 
 - Product management (add, edit products)
 - Stock management (view stock levels, movements, and history)
+- Alerts (recieve alerts when a user makes changes to items, stock and when stock levels are low)
 
 
 
