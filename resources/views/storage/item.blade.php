@@ -1,6 +1,6 @@
 <x-layout>
     <x-header header="{{ ucwords($item->name) }}"
-              href="{{ route('item.settings', ['item' => $item->name]) }}"
+              href="{{ route('item.settings', ['item' => $item]) }}"
               url=""
               subtext="{{ $item->sku }}">
 
@@ -22,9 +22,11 @@
                 <th scope="col" class="px-6 py-3">
                     Stocked
                 </th>
+                @if($item->perishable != 1)
                 <th scope="col" class="px-6 py-3">
                     restocked
                 </th>
+                @endif
                 <th scope="col" class="px-6 py-3">
                     Quantity
                 </th>
@@ -75,9 +77,11 @@
                     <td class="px-6 py-4">
                         {{ $stocked }}
                     </td>
+                    @if($item->perishable != 1)
                     <td class="px-6 py-4">
                         {{ $restocked }}
                     </td>
+                    @endif
                     <td class="px-6 py-4">
                         {{ $quantity }} / {{ $storage->capacity }}
                     </td>
@@ -89,8 +93,9 @@
                     </td>
                     @if ($item->perishable == 1)
                         @php
-                            $shelfDate = Carbon\Carbon::parse($storage->pivot->created_at)->addDays($item->shelf);
-                            $expiryClass = $shelfDate->isPast() ? 'bg-red-200 text-red-700' : ($shelfDate->diffInDays() <= 0 ? 'bg-orange-200 text-orange-700' : 'bg-green-200 text-green-700');
+                           $shelfDate = Carbon\Carbon::parse($storage->pivot->created_at)->addDays($item->shelf);
+                           $currentDate = Carbon\Carbon::now();
+                           $expiryClass = $shelfDate->isPast() ? 'bg-red-200 text-red-700' : ($shelfDate->diffInDays($currentDate) <= $item->shelf ? 'bg-orange-200 text-orange-700' : 'bg-green-200 text-green-700');
                         @endphp
                         <td class="{{ $expiryClass }} px-2">
                             {{ $shelfDate->format('d-m-Y') }}
@@ -104,7 +109,9 @@
                 <th scope="row" class="px-6 py-3">Total</th>
                 <td class="px-6 py-4"></td>
                 <td class="px-6 py-4"></td>
+                @if($item->perishable != 1)
                 <td class="px-6 py-4"></td>
+                @endif
                 <td class="px-6 py-4">{{ $storages->pluck('pivot.quantity')->sum() }}</td>
                 <td class="px-6 py-3">{{ $storages->pluck('pivot.quantity')->sum() * $item->cost}}</td>
                 <td class="px-6 py-3">{{ $storages->pluck('pivot.quantity')->sum() * $item->price}}</td>

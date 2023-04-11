@@ -100,14 +100,14 @@ class StorageController extends Controller
         }
 
         $storageReorder = $storage->capacity * $storage->replenish / 100;
-        if($storage->item->pluck('pivot.quantity')->sum() < $storageReorder)
+        if ($storage->item->pluck('pivot.quantity')->sum() < $storageReorder)
         {
             $alert = new Alert([
-                    'type' => 'storage_reorder_item',
-                    'item_id' => $item->id,
-                    'storage_id' => $storage->id
-                ]);
-                $user->alerts()->save($alert);
+                'type' => 'storage_reorder_item',
+                'item_id' => $item->id,
+                'storage_id' => $storage->id
+            ]);
+            $user->alerts()->save($alert);
         }
     }
 
