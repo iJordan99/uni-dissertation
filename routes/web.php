@@ -34,12 +34,12 @@ Route::get('settings/warehouse/storage/{storage:identifier}', [StorageController
 Route::post('settings/warehouse/storage/{storage:identifier}', [StorageController::class, 'update'])->name('storage.update')->middleware('auth');
 
 //items
-Route::get('item/{item:name}', [StorageController::class, 'item'])->name('item.locations')->middleware('auth');
+Route::get('item/{item:sku}', [StorageController::class, 'item'])->name('item.locations')->middleware('auth');
 Route::get('items', [ItemsController::class, 'index'])->name('items')->middleware('auth');
 Route::get('items/create', [ItemsController::class, 'create'])->name('item.create')->middleware('auth');
 Route::post('items/create', [ItemsController::class, 'store'])->name('item.create')->middleware('auth');
-Route::get('settings/item/{item:name}', [ItemsController::class, 'settings'])->name('item.settings')->middleware('auth');
-Route::post('settings/item/{item:name}', [ItemsController::class, 'update'])->name('item.update')->middleware('auth');
+Route::get('settings/item/{item:sku}', [ItemsController::class, 'settings'])->name('item.settings')->middleware('auth');
+Route::post('settings/item/{item:sku}', [ItemsController::class, 'update'])->name('item.update')->middleware('auth');
 
 //alerts
 Route::get('alerts', [AlertsController::class, 'index'])->name('alerts')->middleware('auth');

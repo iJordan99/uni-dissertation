@@ -15,7 +15,7 @@
             <div x-data="{ checked: {{ $item->perishable ? 'true' : 'false' }} }">
                 <x-form.checkbox-input name="perishable" {{ $item->perishable ? 'checked' : '' }} disabled/>
                 <div x-show="checked">
-                    <x-form.input name="shelf" type="number" value="{{ $item->perishable }}"/>
+                    <x-form.input name="shelf" type="number" value="{{ $item->shelf }}"/>
                 </div>
             </div>
             <x-form.input name="reorder" value="{{ $item->reorder }}"/>
